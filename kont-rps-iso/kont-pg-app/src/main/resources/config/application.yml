@@ -1,0 +1,229 @@
+spring :
+  profiles:
+    active: dev
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    #是否开启默认的资源处理，默认为true, 为false swagger不可用
+    add-mappings: true
+  messages:
+    basename: i18n/messages
+    #设定加载的资源文件缓存失效时间，-1的话为永不过期，默认为-1,单位 s
+    cache-duration: 10
+    encoding: UTF-8
+  thymeleaf:
+    cache: false
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+  # cache:
+  #   jcache:
+  #     config: classpath:config/ehcache3.xml
+  #     provider: org.ehcache.jsr107.EhcacheCachingProvider
+
+  cloud:
+    stream:
+      defaultBinder: rabbit
+      bindings:
+        input:
+          destination: ${spring.application.name}
+          group: ${spring.application.name}
+          consumer:
+            concurrency: 1
+            maxConcurrency: 5
+            maxAttempts: 1
+            durableSubscription: true
+            prefetch: 10
+            txSize: 10
+          producer:
+            deliveryMode: PERSISTENT
+        #channel
+        output:
+          enable: true
+          #binder topic
+          destination: ${spring.application.name}
+          producer:
+            deliveryMode: PERSISTENT
+        #channel
+        base-output:
+          enable: true
+          destination: base
+          producer:
+            deliveryMode: PERSISTENT
+        ddep-output:
+          enable: true
+          destination: ddep
+          producer:
+            deliveryMode: PERSISTENT
+        idep-output:
+          enable: true
+          destination: idep
+          producer:
+            deliveryMode: PERSISTENT
+        prod-output:
+          enable: true
+          destination: prod
+          producer:
+            deliveryMode: PERSISTENT
+        acct-output:
+          enable: true
+          destination: acct
+          producer:
+            deliveryMode: PERSISTENT
+        cust-output:
+          enable: true
+          destination: cust
+          producer:
+            deliveryMode: PERSISTENT
+        fxms-output:
+          enable: true
+          destination: fxms
+          producer:
+            deliveryMode: PERSISTENT
+        tdep-output:
+          enable: true
+          destination: tdep
+          producer:
+            deliveryMode: PERSISTENT
+      rabbit:
+        bindings:
+          output:
+            producer:
+              transacted: true
+          ddep-output:
+            producer:
+              transacted: true
+          base-output:
+            producer:
+              transacted: true
+          idep-output:
+            producer:
+              transacted: true
+          prod-output:
+            producer:
+              transacted: true
+          acct-output:
+            producer:
+              transacted: true
+          cust-output:
+            producer:
+              transacted: true
+          fxms-output:
+            producer:
+              transacted: true
+          tdep-output:
+            producer:
+              transacted: true
+          input:
+            consumer:
+              #开启死信队列
+              auto-bind-dlq: true
+              #开启进入死信队列的异常信息
+              republish-to-dlq: true
+
+logging:
+  config: classpath:config/logback-spring.xml
+  level:
+    root: INFO
+
+#kont framework configuration
+kont:
+  log:
+    path: log
+  schedule:
+    threadPool:
+      poolSize: 10
+      waitForTasksToCompleteOnShutdown: true
+      awaitTerminaltionSeconds: 30
+  #default locale for application
+  locale:
+    defaultLocale: en_US
+    supportLocales: zh_CN,en_US
+  redisson:
+    enabled: false
+    mode: single
+    address: ${redis.host:192.168.1.184}:6379
+    # password : ${redis.password:Hisunpay2017}
+    poolSize: 30
+    idleSize: 5
+    idleTimeout: 60000
+    connectionTimeout: 10000
+    timeout: 5000
+  dynamic-data-source:
+    enabled: true
+    data-sources: kont,primary
+    defaults-data-source: primary
+  idgen:
+    delta:
+      default: 1
+    prefix: IDGEN
+    autogen:
+      DOPackage: com.hisun.kont.*.entity
+
+feign:
+  httpclient:
+    enabled: true
+    #max connection for http client
+    maxTotal: 300
+    #max per route connection for http client
+    maxPerRoute: 20
+    #Returns the duration of time which this connection can be safely kept idle
+    alive: 60000
+    #idle timeout for connection /ms
+    idleTimeoutMillis: 30000
+    #clear expire and idle timeout http connections schedule rate
+    closedConnectionsRate: 30000
+  # feign client validation
+  validation:
+    enabled: false
+  # feign compression support
+  compression:
+    request:
+      enabled: true
+      mime-types: application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+
+mybatis:
+  mapperLocations: classpath*:mapper/**/*.xml
+  typeAliasesPackage: com.hisun.kont.*.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  # config : mybatis-config.xml
+  # typeHandlersPackage 扫描typeHandlers的包
+
+
+swagger:
+  profiles: dev,sit,ci,test,uat
+  show: true
+  scanPackage: com.hisun
+  version: 1.0
+#  globleRequestParams :
+#    x-auth-token :
+#      desc : sessionId，登录交易传任意值
+#      type : header
+#      modelRef : String
+#    x-kont-secure :
+#      desc : 密钥索引
+#      type : header
+#      modelRef : String
+#    x-kont-sign :
+#      desc : 签名; 规则 ==>> Json -> Json + 密钥; QueryString -> queryString+密钥；Form -> 将需要签名的参数(gateway配置)的值合并成字符串+密钥； PathVariable -> path变量的值合并成字符串+密钥
+#      type : header
+#      modelRef : String
+#    x-kont-channel :
+#      desc : 渠道； 根据密钥索引可以找到渠道，可不传
+#      type : header
+#      modelRef : String
+#    Accept-Language :
+#      desc : 语言环境
+#      type : header
+#      modelRef : String
+

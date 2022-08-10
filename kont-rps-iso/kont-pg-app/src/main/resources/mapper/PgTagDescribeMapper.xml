@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.PgTagDescribeDao">
+	<resultMap type="com.hisun.kont.pg.entity.PgTagDescribeDO" id="pgTagDescribeResultMap">
+		<result property="pgTagId" column="PG_TAG_ID" jdbcType="VARCHAR"/>
+		<result property="ahMt" column="AH_MT" jdbcType="VARCHAR"/>
+		<result property="mtTagKey" column="MT_TAG_KEY" jdbcType="VARCHAR"/>
+		<result property="tagValue" column="TAG_VALUE" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="updateLastTime" column="UPDATE_LAST_TIME" jdbcType="DATE"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		PG_TAG_ID,
+		AH_MT,
+		MT_TAG_KEY,
+		TAG_VALUE,
+		CREATE_TIME,
+		UPDATE_LAST_TIME
+	</sql>
+	<sql id="entity_properties">
+		#{pgTagId, jdbcType=VARCHAR},
+		#{ahMt, jdbcType=VARCHAR},
+		#{mtTagKey, jdbcType=VARCHAR},
+		#{tagValue, jdbcType=VARCHAR},
+		#{createTime, jdbcType=DATE},
+		#{updateLastTime, jdbcType=DATE}
+	</sql>
+
+	<!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+	<sql id="page_where">
+		<trim prefix="where" prefixOverrides="and | or ">
+			<if test="pgTagId != null and pgTagId != ''">and PG_TAG_ID = #{pgTagId, jdbcType=VARCHAR}</if>
+			<if test="ahMt != null and ahMt != ''">and AH_MT = #{ahMt, jdbcType=VARCHAR}</if>
+			<if test="mtTagKey != null and mtTagKey != ''">and MT_TAG_KEY = #{mtTagKey, jdbcType=VARCHAR}</if>
+			<if test="tagValue != null and tagValue != ''">and TAG_VALUE = #{tagValue, jdbcType=VARCHAR}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="updateLastTime != null">and UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+			<if test="pgTagId != null and pgTagId != ''">and PG_TAG_ID like concat(#{pgTagId, jdbcType=VARCHAR},'%')</if>
+			<if test="ahMt != null and ahMt != ''">and AH_MT like concat(#{ahMt, jdbcType=VARCHAR},'%')</if>
+			<if test="mtTagKey != null and mtTagKey != ''">and MT_TAG_KEY like concat(#{mtTagKey, jdbcType=VARCHAR},'%')</if>
+			<if test="tagValue != null and tagValue != ''">and TAG_VALUE like concat(#{tagValue, jdbcType=VARCHAR},'%')</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="updateLastTime != null">and UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.PgTagDescribeDO">
+		insert into "pg_tag_describe"( <include refid="table_columns" /> )
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "pg_tag_describe"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			select
+			#{item.pgTagId, jdbcType=VARCHAR},
+			#{item.ahMt, jdbcType=VARCHAR},
+			#{item.mtTagKey, jdbcType=VARCHAR},
+			#{item.tagValue, jdbcType=VARCHAR},
+			#{item.createTime, jdbcType=DATE},
+			#{item.updateLastTime, jdbcType=DATE}
+			from dual
+		</foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "pg_tag_describe"
+		<where>
+			and PG_TAG_ID = #{pgTagId, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.PgTagDescribeDO">
+		delete from "pg_tag_describe"
+		<where>
+			and PG_TAG_ID = #{pgTagId, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.PgTagDescribeDO">
+		delete from "pg_tag_describe"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.PgTagDescribeDO">
+		update "pg_tag_describe"
+		<trim prefix="set" suffixOverrides=",">
+			<if test="pgTagId != null and pgTagId != ''">PG_TAG_ID = #{pgTagId, jdbcType=VARCHAR},</if>
+			<if test="ahMt != null and ahMt != ''">AH_MT = #{ahMt, jdbcType=VARCHAR},</if>
+			<if test="mtTagKey != null and mtTagKey != ''">MT_TAG_KEY = #{mtTagKey, jdbcType=VARCHAR},</if>
+			<if test="tagValue != null and tagValue != ''">TAG_VALUE = #{tagValue, jdbcType=VARCHAR},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="updateLastTime != null">UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE},</if>
+		</trim>
+		<where>
+			and PG_TAG_ID = #{pgTagId, jdbcType=VARCHAR}
+		</where>
+	</update>
+
+
+	<select id="findAll" resultMap="pgTagDescribeResultMap">
+		select <include refid="table_columns" />
+		from "pg_tag_describe"
+	</select>
+
+	<select id="findList" resultMap="pgTagDescribeResultMap">
+		select <include refid="table_columns" />
+		from "pg_tag_describe"
+		<include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgTagDescribeResultMap">
+		select <include refid="table_columns" />
+		from "pg_tag_describe"
+		<include refid="page_where_like" />
+	</select>
+
+	<select id="get" resultMap="pgTagDescribeResultMap" parameterType="String" >
+		select <include refid="table_columns" />
+		from "pg_tag_describe"
+		<where>
+			and PG_TAG_ID = #{pgTagId, jdbcType=VARCHAR}
+		</where>
+	</select>
+
+	<select id="getByKey" resultMap="pgTagDescribeResultMap" parameterType="com.hisun.kont.pg.entity.PgTagDescribeDO" >
+		select <include refid="table_columns" />
+		from "pg_tag_describe"
+		<where>
+			and PG_TAG_ID = #{pgTagId, jdbcType=VARCHAR}
+		</where>
+	</select>
+
+	<!-- 其他自定义SQL -->
+
+
+</mapper>

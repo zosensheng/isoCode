@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.PgSrcSwLogDao">
+	<resultMap type="com.hisun.kont.pg.entity.PgSrcSwLogDO" id="pgSrcSwLogResultMap">
+		<result property="srcSwId" column="SRC_SW_ID" jdbcType="NUMERIC"/>
+		<result property="srcSwType" column="SRC_SW_TYPE" jdbcType="VARCHAR"/>
+		<result property="swPreStatus" column="SW_PRE_STATUS" jdbcType="VARCHAR"/>
+		<result property="swPostStatus" column="SW_POST_STATUS" jdbcType="VARCHAR"/>
+		<result property="operateTeller" column="OPERATE_TELLER" jdbcType="VARCHAR"/>
+		<result property="branchId" column="BRANCH_ID" jdbcType="VARCHAR"/>
+		<result property="srcAppl" column="SRC_APPL" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="updatedLastTime" column="UPDATED_LAST_TIME" jdbcType="DATE"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		SRC_SW_ID,
+		SRC_SW_TYPE,
+		SW_PRE_STATUS,
+		SW_POST_STATUS,
+		OPERATE_TELLER,
+		BRANCH_ID,
+		SRC_APPL,
+		CREATE_TIME,
+		UPDATED_LAST_TIME
+    </sql>
+	<sql id="entity_properties">
+		#{srcSwId, jdbcType=NUMERIC},
+		#{srcSwType, jdbcType=VARCHAR},
+		#{swPreStatus, jdbcType=VARCHAR},
+		#{swPostStatus, jdbcType=VARCHAR},
+		#{operateTeller, jdbcType=VARCHAR},
+		#{branchId, jdbcType=VARCHAR},
+		#{srcAppl, jdbcType=VARCHAR},
+		#{createTime, jdbcType=DATE},
+		#{updatedLastTime, jdbcType=DATE}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+			<if test="srcSwId != null">and SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC}</if>
+            <if test="srcSwType != null and srcSwType != ''">and SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR}</if>
+            <if test="swPreStatus != null and swPreStatus != ''">and SW_PRE_STATUS = #{swPreStatus, jdbcType=VARCHAR}</if>
+            <if test="swPostStatus != null and swPostStatus != ''">and SW_POST_STATUS = #{swPostStatus, jdbcType=VARCHAR}</if>
+            <if test="operateTeller != null and operateTeller != ''">and OPERATE_TELLER = #{operateTeller, jdbcType=VARCHAR}</if>
+            <if test="branchId != null and branchId != ''">and BRANCH_ID = #{branchId, jdbcType=VARCHAR}</if>
+            <if test="srcAppl != null and srcAppl != ''">and SRC_APPL = #{srcAppl, jdbcType=VARCHAR}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="updatedLastTime != null">and UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="srcSwId != null">and SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC}</if>
+					<if test="srcSwType != null and srcSwType != ''">and SRC_SW_TYPE like concat(#{srcSwType, jdbcType=VARCHAR},'%')</if>
+					<if test="swPreStatus != null and swPreStatus != ''">and SW_PRE_STATUS like concat(#{swPreStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="swPostStatus != null and swPostStatus != ''">and SW_POST_STATUS like concat(#{swPostStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="operateTeller != null and operateTeller != ''">and OPERATE_TELLER like concat(#{operateTeller, jdbcType=VARCHAR},'%')</if>
+					<if test="branchId != null and branchId != ''">and BRANCH_ID like concat(#{branchId, jdbcType=VARCHAR},'%')</if>
+					<if test="srcAppl != null and srcAppl != ''">and SRC_APPL like concat(#{srcAppl, jdbcType=VARCHAR},'%')</if>
+					<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+					<if test="updatedLastTime != null">and UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.PgSrcSwLogDO">
+		insert into "pg_src_sw_log"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "pg_src_sw_log"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.srcSwId, jdbcType=NUMERIC},
+			#{item.srcSwType, jdbcType=VARCHAR},
+			#{item.swPreStatus, jdbcType=VARCHAR},
+			#{item.swPostStatus, jdbcType=VARCHAR},
+			#{item.operateTeller, jdbcType=VARCHAR},
+			#{item.branchId, jdbcType=VARCHAR},
+			#{item.srcAppl, jdbcType=VARCHAR},
+			#{item.createTime, jdbcType=DATE},
+			#{item.updatedLastTime, jdbcType=DATE}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "pg_src_sw_log"
+		<where>
+			and SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.PgSrcSwLogDO">
+		delete from "pg_src_sw_log"
+        <where>
+            and SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.PgSrcSwLogDO">
+		delete from "pg_src_sw_log"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.PgSrcSwLogDO">
+        update "pg_src_sw_log"
+        <trim prefix="set" suffixOverrides=",">
+			<if test="srcSwId != null">SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC},</if>
+            <if test="srcSwType != null and srcSwType != ''">SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR},</if>
+            <if test="swPreStatus != null and swPreStatus != ''">SW_PRE_STATUS = #{swPreStatus, jdbcType=VARCHAR},</if>
+            <if test="swPostStatus != null and swPostStatus != ''">SW_POST_STATUS = #{swPostStatus, jdbcType=VARCHAR},</if>
+            <if test="operateTeller != null and operateTeller != ''">OPERATE_TELLER = #{operateTeller, jdbcType=VARCHAR},</if>
+            <if test="branchId != null and branchId != ''">BRANCH_ID = #{branchId, jdbcType=VARCHAR},</if>
+            <if test="srcAppl != null and srcAppl != ''">SRC_APPL = #{srcAppl, jdbcType=VARCHAR},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="updatedLastTime != null">UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE},</if>
+        </trim>
+        <where>
+            and SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="pgSrcSwLogResultMap">
+        select <include refid="table_columns" />
+        from "pg_src_sw_log"
+    </select>
+
+    <select id="findList" resultMap="pgSrcSwLogResultMap">
+        select <include refid="table_columns" />
+        from "pg_src_sw_log"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgSrcSwLogResultMap">
+		select <include refid="table_columns" />
+		from "pg_src_sw_log"
+		<include refid="page_where_like" />
+	</select>
+
+    <select id="getCount" resultType="int" >
+        select count(SRC_SW_ID) from "pg_src_sw_log"
+        <include refid="page_where" />
+    </select>
+
+	<select id="get" resultMap="pgSrcSwLogResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "pg_src_sw_log"
+        <where>
+            and SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="pgSrcSwLogResultMap" parameterType="com.hisun.kont.pg.entity.PgSrcSwLogDO" >
+        select <include refid="table_columns" />
+        from "pg_src_sw_log"
+        <where>
+            and SRC_SW_ID = #{srcSwId, jdbcType=NUMERIC}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+
+
+</mapper>

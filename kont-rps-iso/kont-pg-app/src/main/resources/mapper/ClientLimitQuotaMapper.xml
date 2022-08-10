@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.ClientLimitQuotaDao">
+	<resultMap type="com.hisun.kont.pg.entity.ClientLimitQuotaDO" id="clientLimitQuotaResultMap">
+		<result property="channel" column="CHANNEL" jdbcType="VARCHAR"/>
+		<result property="bizSvc" column="BIZ_SVC" jdbcType="VARCHAR"/>
+		<result property="instrId" column="INSTR_ID" jdbcType="VARCHAR"/>
+		<result property="rtrId" column="RTR_ID" jdbcType="VARCHAR"/>
+		<result property="txCcy" column="TX_CCY" jdbcType="VARCHAR"/>
+		<result property="txDate" column="TX_DATE" jdbcType="DATE"/>
+		<result property="txAmount" column="TX_AMOUNT" jdbcType="NUMERIC"/>
+		<result property="txAcct" column="TX_ACCT" jdbcType="VARCHAR"/>
+		<result property="txStatus" column="TX_STATUS" jdbcType="VARCHAR"/>
+		<result property="txFlag" column="TX_FLAG" jdbcType="VARCHAR"/>
+		<result property="createTeller" column="CREATE_TELLER" jdbcType="VARCHAR"/>
+		<result property="modifyTeller" column="MODIFY_TELLER" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="modifyTime" column="MODIFY_TIME" jdbcType="DATE"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		CHANNEL,
+		BIZ_SVC,
+		INSTR_ID,
+		RTR_ID,
+		TX_CCY,
+		TX_DATE,
+		TX_AMOUNT,
+		TX_ACCT,
+		TX_STATUS,
+		TX_FLAG,
+		CREATE_TELLER,
+		MODIFY_TELLER,
+		CREATE_TIME,
+		MODIFY_TIME
+    </sql>
+	<sql id="entity_properties">
+		#{channel, jdbcType=VARCHAR},
+		#{bizSvc, jdbcType=VARCHAR},
+		#{instrId, jdbcType=VARCHAR},
+		#{rtrId, jdbcType=VARCHAR},
+		#{txCcy, jdbcType=VARCHAR},
+		#{txDate, jdbcType=DATE},
+		#{txAmount, jdbcType=NUMERIC},
+		#{txAcct, jdbcType=VARCHAR},
+		#{txStatus, jdbcType=VARCHAR},
+		#{txFlag, jdbcType=VARCHAR},
+		#{createTeller, jdbcType=VARCHAR},
+		#{modifyTeller, jdbcType=VARCHAR},
+		#{createTime, jdbcType=DATE},
+		#{modifyTime, jdbcType=DATE}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="channel != null and channel != ''">and CHANNEL = #{channel, jdbcType=VARCHAR}</if>
+            <if test="bizSvc != null and bizSvc != ''">and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}</if>
+            <if test="instrId != null and instrId != ''">and INSTR_ID = #{instrId, jdbcType=VARCHAR}</if>
+            <if test="rtrId != null and rtrId != ''">and RTR_ID = #{rtrId, jdbcType=VARCHAR}</if>
+            <if test="txCcy != null and txCcy != ''">and TX_CCY = #{txCcy, jdbcType=VARCHAR}</if>
+			<if test="txDate != null">and TX_DATE = #{txDate, jdbcType=DATE}</if>
+			<if test="txAmount != null">and TX_AMOUNT = #{txAmount, jdbcType=NUMERIC}</if>
+            <if test="txAcct != null and txAcct != ''">and TX_ACCT = #{txAcct, jdbcType=VARCHAR}</if>
+            <if test="txStatus != null and txStatus != ''">and TX_STATUS = #{txStatus, jdbcType=VARCHAR}</if>
+            <if test="txFlag != null and txFlag != ''">and TX_FLAG = #{txFlag, jdbcType=VARCHAR}</if>
+            <if test="createTeller != null and createTeller != ''">and CREATE_TELLER = #{createTeller, jdbcType=VARCHAR}</if>
+            <if test="modifyTeller != null and modifyTeller != ''">and MODIFY_TELLER = #{modifyTeller, jdbcType=VARCHAR}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="channel != null and channel != ''">and CHANNEL like concat(#{channel, jdbcType=VARCHAR},'%')</if>
+					<if test="bizSvc != null and bizSvc != ''">and BIZ_SVC like concat(#{bizSvc, jdbcType=VARCHAR},'%')</if>
+					<if test="instrId != null and instrId != ''">and INSTR_ID like concat(#{instrId, jdbcType=VARCHAR},'%')</if>
+					<if test="rtrId != null and rtrId != ''">and RTR_ID like concat(#{rtrId, jdbcType=VARCHAR},'%')</if>
+					<if test="txCcy != null and txCcy != ''">and TX_CCY like concat(#{txCcy, jdbcType=VARCHAR},'%')</if>
+					<if test="txDate != null">and TX_DATE = #{txDate, jdbcType=DATE}</if>
+					<if test="txAmount != null">and TX_AMOUNT = #{txAmount, jdbcType=NUMERIC}</if>
+					<if test="txAcct != null and txAcct != ''">and TX_ACCT like concat(#{txAcct, jdbcType=VARCHAR},'%')</if>
+					<if test="txStatus != null and txStatus != ''">and TX_STATUS like concat(#{txStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="txFlag != null and txFlag != ''">and TX_FLAG like concat(#{txFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="createTeller != null and createTeller != ''">and CREATE_TELLER like concat(#{createTeller, jdbcType=VARCHAR},'%')</if>
+					<if test="modifyTeller != null and modifyTeller != ''">and MODIFY_TELLER like concat(#{modifyTeller, jdbcType=VARCHAR},'%')</if>
+					<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+					<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.ClientLimitQuotaDO">
+		insert into "CLIENT_LIMIT_QUOTA"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "CLIENT_LIMIT_QUOTA"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.channel, jdbcType=VARCHAR},
+			#{item.bizSvc, jdbcType=VARCHAR},
+			#{item.instrId, jdbcType=VARCHAR},
+			#{item.rtrId, jdbcType=VARCHAR},
+			#{item.txCcy, jdbcType=VARCHAR},
+			#{item.txDate, jdbcType=DATE},
+			#{item.txAmount, jdbcType=NUMERIC},
+			#{item.txAcct, jdbcType=VARCHAR},
+			#{item.txStatus, jdbcType=VARCHAR},
+			#{item.txFlag, jdbcType=VARCHAR},
+			#{item.createTeller, jdbcType=VARCHAR},
+			#{item.modifyTeller, jdbcType=VARCHAR},
+			#{item.createTime, jdbcType=DATE},
+			#{item.modifyTime, jdbcType=DATE}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "CLIENT_LIMIT_QUOTA"
+		<where>
+			and CHANNEL = #{channel, jdbcType=VARCHAR}
+			and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+			and INSTR_ID = #{instrId, jdbcType=VARCHAR}
+			and TX_ACCT = #{txAcct, jdbcType=VARCHAR}
+			and TX_FLAG = #{txFlag, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.ClientLimitQuotaDO">
+		delete from "CLIENT_LIMIT_QUOTA"
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and INSTR_ID = #{instrId, jdbcType=VARCHAR}
+            and TX_ACCT = #{txAcct, jdbcType=VARCHAR}
+            and TX_FLAG = #{txFlag, jdbcType=VARCHAR}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.ClientLimitQuotaDO">
+		delete from "CLIENT_LIMIT_QUOTA"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.ClientLimitQuotaDO">
+        update "CLIENT_LIMIT_QUOTA"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="channel != null and channel != ''">CHANNEL = #{channel, jdbcType=VARCHAR},</if>
+            <if test="bizSvc != null and bizSvc != ''">BIZ_SVC = #{bizSvc, jdbcType=VARCHAR},</if>
+            <if test="instrId != null and instrId != ''">INSTR_ID = #{instrId, jdbcType=VARCHAR},</if>
+            <if test="rtrId != null and rtrId != ''">RTR_ID = #{rtrId, jdbcType=VARCHAR},</if>
+            <if test="txCcy != null and txCcy != ''">TX_CCY = #{txCcy, jdbcType=VARCHAR},</if>
+			<if test="txDate != null">TX_DATE = #{txDate, jdbcType=DATE},</if>
+			<if test="txAmount != null">TX_AMOUNT = #{txAmount, jdbcType=NUMERIC},</if>
+            <if test="txAcct != null and txAcct != ''">TX_ACCT = #{txAcct, jdbcType=VARCHAR},</if>
+            <if test="txStatus != null and txStatus != ''">TX_STATUS = #{txStatus, jdbcType=VARCHAR},</if>
+            <if test="txFlag != null and txFlag != ''">TX_FLAG = #{txFlag, jdbcType=VARCHAR},</if>
+            <if test="createTeller != null and createTeller != ''">CREATE_TELLER = #{createTeller, jdbcType=VARCHAR},</if>
+            <if test="modifyTeller != null and modifyTeller != ''">MODIFY_TELLER = #{modifyTeller, jdbcType=VARCHAR},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="modifyTime != null">MODIFY_TIME = #{modifyTime, jdbcType=DATE},</if>
+        </trim>
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and INSTR_ID = #{instrId, jdbcType=VARCHAR}
+            and TX_ACCT = #{txAcct, jdbcType=VARCHAR}
+            and TX_FLAG = #{txFlag, jdbcType=VARCHAR}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="clientLimitQuotaResultMap">
+        select <include refid="table_columns" />
+        from "CLIENT_LIMIT_QUOTA"
+    </select>
+
+    <select id="findList" resultMap="clientLimitQuotaResultMap">
+        select <include refid="table_columns" />
+        from "CLIENT_LIMIT_QUOTA"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="clientLimitQuotaResultMap">
+		select <include refid="table_columns" />
+		from "CLIENT_LIMIT_QUOTA"
+		<include refid="page_where_like" />
+	</select>
+
+	<select id="get" resultMap="clientLimitQuotaResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "CLIENT_LIMIT_QUOTA"
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and INSTR_ID = #{instrId, jdbcType=VARCHAR}
+            and TX_ACCT = #{txAcct, jdbcType=VARCHAR}
+            and TX_FLAG = #{txFlag, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="clientLimitQuotaResultMap" parameterType="com.hisun.kont.pg.entity.ClientLimitQuotaDO" >
+        select <include refid="table_columns" />
+        from "CLIENT_LIMIT_QUOTA"
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and INSTR_ID = #{instrId, jdbcType=VARCHAR}
+            and TX_ACCT = #{txAcct, jdbcType=VARCHAR}
+            and TX_FLAG = #{txFlag, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+	<select id="sumTxAmount" resultMap="clientLimitQuotaResultMap" parameterType="com.hisun.kont.pg.entity.ClientLimitQuotaDO" >
+		select SUM(TX_AMOUNT) as txAmount,TX_FLAG as txFlag,TX_STATUS as txStatus
+		from "CLIENT_LIMIT_QUOTA"
+		where TX_DATE = #{txDate}
+		and TX_CCY = #{txCcy}
+		and CHANNEL = #{channel}
+		GROUP BY TX_FLAG,TX_STATUS
+	</select>
+
+
+</mapper>

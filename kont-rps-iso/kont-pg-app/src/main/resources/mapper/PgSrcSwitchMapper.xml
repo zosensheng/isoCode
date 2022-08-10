@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.PgSrcSwitchDao">
+	<resultMap type="com.hisun.kont.pg.entity.PgSrcSwitchDO" id="pgSrcSwitchResultMap">
+		<result property="srcSwType" column="SRC_SW_TYPE" jdbcType="VARCHAR"/>
+		<result property="srcSwStatus" column="SRC_SW_STATUS" jdbcType="VARCHAR"/>
+		<result property="operateTeller" column="OPERATE_TELLER" jdbcType="VARCHAR"/>
+		<result property="branchId" column="BRANCH_ID" jdbcType="VARCHAR"/>
+		<result property="srcAppl" column="SRC_APPL" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="updatedLastTime" column="UPDATED_LAST_TIME" jdbcType="DATE"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		SRC_SW_TYPE,
+		SRC_SW_STATUS,
+		OPERATE_TELLER,
+		BRANCH_ID,
+		SRC_APPL,
+		CREATE_TIME,
+		UPDATED_LAST_TIME
+    </sql>
+	<sql id="entity_properties">
+		#{srcSwType, jdbcType=VARCHAR},
+		#{srcSwStatus, jdbcType=VARCHAR},
+		#{operateTeller, jdbcType=VARCHAR},
+		#{branchId, jdbcType=VARCHAR},
+		#{srcAppl, jdbcType=VARCHAR},
+		#{createTime, jdbcType=DATE},
+		#{updatedLastTime, jdbcType=DATE}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="srcSwType != null and srcSwType != ''">and SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR}</if>
+            <if test="srcSwStatus != null and srcSwStatus != ''">and SRC_SW_STATUS = #{srcSwStatus, jdbcType=VARCHAR}</if>
+            <if test="operateTeller != null and operateTeller != ''">and OPERATE_TELLER = #{operateTeller, jdbcType=VARCHAR}</if>
+            <if test="branchId != null and branchId != ''">and BRANCH_ID = #{branchId, jdbcType=VARCHAR}</if>
+            <if test="srcAppl != null and srcAppl != ''">and SRC_APPL = #{srcAppl, jdbcType=VARCHAR}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="updatedLastTime != null">and UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="srcSwType != null and srcSwType != ''">and SRC_SW_TYPE like concat('%',#{srcSwType, jdbcType=VARCHAR})</if>
+					<if test="srcSwStatus != null and srcSwStatus != ''">and SRC_SW_STATUS like concat('%',#{srcSwStatus, jdbcType=VARCHAR})</if>
+					<if test="operateTeller != null and operateTeller != ''">and OPERATE_TELLER like concat('%',#{operateTeller, jdbcType=VARCHAR})</if>
+					<if test="branchId != null and branchId != ''">and BRANCH_ID like concat('%',#{branchId, jdbcType=VARCHAR})</if>
+					<if test="srcAppl != null and srcAppl != ''">and SRC_APPL like concat('%',#{srcAppl, jdbcType=VARCHAR})</if>
+					<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+					<if test="updatedLastTime != null">and UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.PgSrcSwitchDO">
+		insert into "pg_src_switch"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "pg_src_switch"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.srcSwType, jdbcType=VARCHAR},
+			#{item.srcSwStatus, jdbcType=VARCHAR},
+			#{item.operateTeller, jdbcType=VARCHAR},
+			#{item.branchId, jdbcType=VARCHAR},
+			#{item.srcAppl, jdbcType=VARCHAR},
+			#{item.createTime, jdbcType=DATE},
+			#{item.updatedLastTime, jdbcType=DATE}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "pg_src_switch"
+		<where>
+			and SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.PgSrcSwitchDO">
+		delete from "pg_src_switch"
+        <where>
+            and SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.PgSrcSwitchDO">
+		delete from "pg_src_switch"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.PgSrcSwitchDO">
+        update "pg_src_switch"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="srcSwType != null and srcSwType != ''">SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR},</if>
+            <if test="srcSwStatus != null and srcSwStatus != ''">SRC_SW_STATUS = #{srcSwStatus, jdbcType=VARCHAR},</if>
+            <if test="operateTeller != null and operateTeller != ''">OPERATE_TELLER = #{operateTeller, jdbcType=VARCHAR},</if>
+            <if test="branchId != null and branchId != ''">BRANCH_ID = #{branchId, jdbcType=VARCHAR},</if>
+            <if test="srcAppl != null and srcAppl != ''">SRC_APPL = #{srcAppl, jdbcType=VARCHAR},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="updatedLastTime != null">UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE},</if>
+        </trim>
+        <where>
+            and SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="pgSrcSwitchResultMap">
+        select <include refid="table_columns" />
+        from "pg_src_switch"
+    </select>
+
+    <select id="findList" resultMap="pgSrcSwitchResultMap">
+        select <include refid="table_columns" />
+        from "pg_src_switch"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgSrcSwitchResultMap">
+		select <include refid="table_columns" />
+		from "pg_src_switch"
+		<include refid="page_where_like" />
+	</select>
+
+    <select id="getCount" resultType="int" >
+        select count(SRC_SW_TYPE) from "pg_src_switch"
+        <include refid="page_where" />
+    </select>
+
+	<select id="get" resultMap="pgSrcSwitchResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "pg_src_switch"
+        <where>
+            and SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="pgSrcSwitchResultMap" parameterType="com.hisun.kont.pg.entity.PgSrcSwitchDO" >
+        select <include refid="table_columns" />
+        from "pg_src_switch"
+        <where>
+            and SRC_SW_TYPE = #{srcSwType, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+
+
+</mapper>

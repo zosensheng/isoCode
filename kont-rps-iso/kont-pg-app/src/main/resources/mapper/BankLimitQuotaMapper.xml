@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.BankLimitQuotaDao">
+	<resultMap type="com.hisun.kont.pg.entity.BankLimitQuotaDO" id="bankLimitQuotaResultMap">
+		<result property="channel" column="CHANNEL" jdbcType="VARCHAR"/>
+		<result property="limitCcy" column="LIMIT_CCY" jdbcType="VARCHAR"/>
+		<result property="bizSvc" column="BIZ_SVC" jdbcType="VARCHAR"/>
+		<result property="dailyLimitAmount" column="DAILY_LIMIT_AMOUNT" jdbcType="NUMERIC"/>
+		<result property="singleLimitAmount" column="SINGLE_LIMIT_AMOUNT" jdbcType="NUMERIC"/>
+		<result property="createTeller" column="CREATE_TELLER" jdbcType="VARCHAR"/>
+		<result property="modifyTeller" column="MODIFY_TELLER" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="modifyTime" column="MODIFY_TIME" jdbcType="DATE"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		CHANNEL,
+		LIMIT_CCY,
+		BIZ_SVC,
+		DAILY_LIMIT_AMOUNT,
+		SINGLE_LIMIT_AMOUNT,
+		CREATE_TELLER,
+		MODIFY_TELLER,
+		CREATE_TIME,
+		MODIFY_TIME
+    </sql>
+	<sql id="entity_properties">
+		#{channel, jdbcType=VARCHAR},
+		#{limitCcy, jdbcType=VARCHAR},
+		#{bizSvc, jdbcType=VARCHAR},
+		#{dailyLimitAmount, jdbcType=NUMERIC},
+		#{singleLimitAmount, jdbcType=NUMERIC},
+		#{createTeller, jdbcType=VARCHAR},
+		#{modifyTeller, jdbcType=VARCHAR},
+		#{createTime, jdbcType=DATE},
+		#{modifyTime, jdbcType=DATE}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="channel != null and channel != ''">and CHANNEL = #{channel, jdbcType=VARCHAR}</if>
+            <if test="limitCcy != null and limitCcy != ''">and LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR}</if>
+            <if test="bizSvc != null and bizSvc != ''">and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}</if>
+			<if test="dailyLimitAmount != null">and DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC}</if>
+			<if test="singleLimitAmount != null">and SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC}</if>
+            <if test="createTeller != null and createTeller != ''">and CREATE_TELLER = #{createTeller, jdbcType=VARCHAR}</if>
+            <if test="modifyTeller != null and modifyTeller != ''">and MODIFY_TELLER = #{modifyTeller, jdbcType=VARCHAR}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="channel != null and channel != ''">and CHANNEL like concat(#{channel, jdbcType=VARCHAR},'%')</if>
+					<if test="limitCcy != null and limitCcy != ''">and LIMIT_CCY like concat(#{limitCcy, jdbcType=VARCHAR},'%')</if>
+					<if test="bizSvc != null and bizSvc != ''">and BIZ_SVC like concat(#{bizSvc, jdbcType=VARCHAR},'%')</if>
+					<if test="dailyLimitAmount != null">and DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC}</if>
+					<if test="singleLimitAmount != null">and SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC}</if>
+					<if test="createTeller != null and createTeller != ''">and CREATE_TELLER like concat(#{createTeller, jdbcType=VARCHAR},'%')</if>
+					<if test="modifyTeller != null and modifyTeller != ''">and MODIFY_TELLER like concat(#{modifyTeller, jdbcType=VARCHAR},'%')</if>
+					<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+					<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.BankLimitQuotaDO">
+		insert into "BANK_LIMIT_QUOTA"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "BANK_LIMIT_QUOTA"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.channel, jdbcType=VARCHAR},
+			#{item.limitCcy, jdbcType=VARCHAR},
+			#{item.bizSvc, jdbcType=VARCHAR},
+			#{item.dailyLimitAmount, jdbcType=NUMERIC},
+			#{item.singleLimitAmount, jdbcType=NUMERIC},
+			#{item.createTeller, jdbcType=VARCHAR},
+			#{item.modifyTeller, jdbcType=VARCHAR},
+			#{item.createTime, jdbcType=DATE},
+			#{item.modifyTime, jdbcType=DATE}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "BANK_LIMIT_QUOTA"
+		<where>
+			and CHANNEL = #{channel, jdbcType=VARCHAR}
+			and LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR}
+			and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+			and DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC}
+			and SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.BankLimitQuotaDO">
+		delete from "BANK_LIMIT_QUOTA"
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC}
+            and SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.BankLimitQuotaDO">
+		delete from "BANK_LIMIT_QUOTA"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.BankLimitQuotaDO">
+        update "BANK_LIMIT_QUOTA"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="channel != null and channel != ''">CHANNEL = #{channel, jdbcType=VARCHAR},</if>
+            <if test="limitCcy != null and limitCcy != ''">LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR},</if>
+            <if test="bizSvc != null and bizSvc != ''">BIZ_SVC = #{bizSvc, jdbcType=VARCHAR},</if>
+			<if test="dailyLimitAmount != null">DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC},</if>
+			<if test="singleLimitAmount != null">SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC},</if>
+            <if test="createTeller != null and createTeller != ''">CREATE_TELLER = #{createTeller, jdbcType=VARCHAR},</if>
+            <if test="modifyTeller != null and modifyTeller != ''">MODIFY_TELLER = #{modifyTeller, jdbcType=VARCHAR},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="modifyTime != null">MODIFY_TIME = #{modifyTime, jdbcType=DATE},</if>
+        </trim>
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC}
+            and SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="bankLimitQuotaResultMap">
+        select <include refid="table_columns" />
+        from "BANK_LIMIT_QUOTA"
+    </select>
+
+    <select id="findList" resultMap="bankLimitQuotaResultMap">
+        select <include refid="table_columns" />
+        from "BANK_LIMIT_QUOTA"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="bankLimitQuotaResultMap">
+		select <include refid="table_columns" />
+		from "BANK_LIMIT_QUOTA"
+		<include refid="page_where_like" />
+	</select>
+
+	<select id="get" resultMap="bankLimitQuotaResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "BANK_LIMIT_QUOTA"
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC}
+            and SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="bankLimitQuotaResultMap" parameterType="com.hisun.kont.pg.entity.BankLimitQuotaDO" >
+        select <include refid="table_columns" />
+        from "BANK_LIMIT_QUOTA"
+        <where>
+            and CHANNEL = #{channel, jdbcType=VARCHAR}
+            and LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR}
+            and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+            and DAILY_LIMIT_AMOUNT = #{dailyLimitAmount, jdbcType=NUMERIC}
+            and SINGLE_LIMIT_AMOUNT = #{singleLimitAmount, jdbcType=NUMERIC}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+	<select id="select" resultMap="bankLimitQuotaResultMap" parameterType="com.hisun.kont.pg.entity.BankLimitQuotaDO" >
+		select <include refid="table_columns" />
+		from "BANK_LIMIT_QUOTA"
+		<where>
+			and CHANNEL = #{channel, jdbcType=VARCHAR}
+			and LIMIT_CCY = #{limitCcy, jdbcType=VARCHAR}
+			and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}
+		</where>
+	</select>
+
+</mapper>

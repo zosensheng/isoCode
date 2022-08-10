@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.PgMatchDao">
+	<resultMap type="com.hisun.kont.pg.entity.PgMatchDO" id="pgMatchResultMap">
+		<result property="msgNo" column="MSG_NO" jdbcType="VARCHAR"/>
+		<result property="pagmchOurRef" column="PAGMCH_OUR_REF" jdbcType="VARCHAR"/>
+		<result property="createdTime" column="CREATED_TIME" jdbcType="DATE"/>
+		<result property="updateLastTime" column="UPDATE_LAST_TIME" jdbcType="DATE"/>
+		<result property="updateLastTeller" column="UPDATE_LAST_TELLER" jdbcType="VARCHAR"/>
+		<result property="updateLastAcDate" column="UPDATE_LAST_AC_DATE" jdbcType="DATE"/>
+		<result property="updateLastTerm" column="UPDATE_LAST_TERM" jdbcType="NUMERIC"/>
+		<result property="updateLastTxnCode" column="UPDATE_LAST_TXN_CODE" jdbcType="VARCHAR"/>
+		<result property="logNumber" column="LOG_NUMBER" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		MSG_NO,
+		PAGMCH_OUR_REF,
+		CREATED_TIME,
+		UPDATE_LAST_TIME,
+		UPDATE_LAST_TELLER,
+		UPDATE_LAST_AC_DATE,
+		UPDATE_LAST_TERM,
+		UPDATE_LAST_TXN_CODE,
+		LOG_NUMBER
+    </sql>
+	<sql id="entity_properties">
+		#{msgNo, jdbcType=VARCHAR},
+		#{pagmchOurRef, jdbcType=VARCHAR},
+		#{createdTime, jdbcType=DATE},
+		#{updateLastTime, jdbcType=DATE},
+		#{updateLastTeller, jdbcType=VARCHAR},
+		#{updateLastAcDate, jdbcType=DATE},
+		#{updateLastTerm, jdbcType=NUMERIC},
+		#{updateLastTxnCode, jdbcType=VARCHAR},
+		#{logNumber, jdbcType=VARCHAR}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="msgNo != null and msgNo != ''">and MSG_NO = #{msgNo, jdbcType=VARCHAR}</if>
+            <if test="pagmchOurRef != null and pagmchOurRef != ''">and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}</if>
+			<if test="createdTime != null">and CREATED_TIME = #{createdTime, jdbcType=DATE}</if>
+			<if test="updateLastTime != null">and UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE}</if>
+			<if test="updateLastTeller != null and updateLastTeller != ''">and UPDATE_LAST_TELLER = #{updateLastTeller, jdbcType=VARCHAR}</if>
+			<if test="updateLastAcDate != null">and UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE}</if>
+			<if test="updateLastTerm != null">and UPDATE_LAST_TERM = #{updateLastTerm, jdbcType=NUMERIC}</if>
+			<if test="updateLastTxnCode != null and updateLastTxnCode != ''">and UPDATE_LAST_TXN_CODE = #{updateLastTxnCode, jdbcType=VARCHAR}</if>
+			<if test="logNumber != null and logNumber != ''">and LOG_NUMBER = #{logNumber, jdbcType=VARCHAR}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+			<if test="msgNo != null and msgNo != ''">and MSG_NO like concat(#{msgNo, jdbcType=VARCHAR},'%')</if>
+			<if test="pagmchOurRef != null and pagmchOurRef != ''">and PAGMCH_OUR_REF like concat(#{pagmchOurRef, jdbcType=VARCHAR},'%')</if>
+			<if test="createdTime != null">and CREATED_TIME = #{createdTime, jdbcType=DATE}</if>
+			<if test="updateLastTime != null">and UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE}</if>
+			<if test="updateLastTeller != null and updateLastTeller != ''">and UPDATE_LAST_TELLER like concat(#{updateLastTeller, jdbcType=VARCHAR},'%')</if>
+			<if test="updateLastAcDate != null">and UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE}</if>
+			<if test="updateLastTerm != null">and UPDATE_LAST_TERM = #{updateLastTerm, jdbcType=NUMERIC}</if>
+			<if test="updateLastTxnCode != null and updateLastTxnCode != ''">and UPDATE_LAST_TXN_CODE like concat(#{updateLastTxnCode, jdbcType=VARCHAR},'%')</if>
+			<if test="logNumber != null and logNumber != ''">and LOG_NUMBER like concat(#{logNumber, jdbcType=VARCHAR},'%')</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.PgMatchDO">
+		insert into "pg_match"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "pg_match"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.msgNo, jdbcType=VARCHAR},
+			#{item.pagmchOurRef, jdbcType=VARCHAR},
+			#{item.createdTime, jdbcType=DATE},
+			#{item.updateLastTime, jdbcType=DATE},
+			#{item.updateLastTeller, jdbcType=VARCHAR},
+			#{item.updateLastAcDate, jdbcType=DATE},
+			#{item.updateLastTerm, jdbcType=NUMERIC},
+			#{item.updateLastTxnCode, jdbcType=VARCHAR},
+			#{item.logNumber, jdbcType=VARCHAR}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "pg_match"
+		<where>
+			and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+			and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.PgMatchDO">
+		delete from "pg_match"
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+            and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.PgMatchDO">
+		delete from "pg_match"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.PgMatchDO">
+        update "pg_match"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="msgNo != null and msgNo != ''">MSG_NO = #{msgNo, jdbcType=VARCHAR},</if>
+            <if test="pagmchOurRef != null and pagmchOurRef != ''">PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR},</if>
+			<if test="createdTime != null">CREATED_TIME = #{createdTime, jdbcType=DATE},</if>
+			<if test="updateLastTime != null">UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE},</if>
+			<if test="updateLastTeller != null and updateLastTeller != ''">UPDATE_LAST_TELLER = #{updateLastTeller, jdbcType=VARCHAR},</if>
+			<if test="updateLastAcDate != null">UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE},</if>
+			<if test="updateLastTerm != null">UPDATE_LAST_TERM = #{updateLastTerm, jdbcType=NUMERIC},</if>
+			<if test="updateLastTxnCode != null and updateLastTxnCode != ''">UPDATE_LAST_TXN_CODE = #{updateLastTxnCode, jdbcType=VARCHAR},</if>
+			<if test="logNumber != null and logNumber != ''">LOG_NUMBER = #{logNumber, jdbcType=VARCHAR},</if>
+        </trim>
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+            and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="pgMatchResultMap">
+        select <include refid="table_columns" />
+        from "pg_match"
+    </select>
+
+    <select id="findList" resultMap="pgMatchResultMap">
+        select <include refid="table_columns" />
+        from "pg_match"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgMatchResultMap">
+		select <include refid="table_columns" />
+		from "pg_match"
+		<include refid="page_where_like" />
+	</select>
+
+	<select id="get" resultMap="pgMatchResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "pg_match"
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+            and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="pgMatchResultMap" parameterType="com.hisun.kont.pg.entity.PgMatchDO" >
+        select <include refid="table_columns" />
+        from "pg_match"
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+            and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+	<!--根据报文编号更新关联业务编号-->
+	<update id="updateMatchOurRefByMsgNo" parameterType="com.hisun.kont.pg.entity.PgMatchDO">
+		update "pg_match"
+		<trim prefix="set" suffixOverrides=",">
+			<if test="pagmchOurRef != null and pagmchOurRef != ''">PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR},</if>
+			<if test="createdTime != null">CREATED_TIME = #{createdTime, jdbcType=DATE},</if>
+			<if test="updateLastTime != null">UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE},</if>
+			<if test="updateLastTeller != null and updateLastTeller != ''">UPDATE_LAST_TELLER = #{updateLastTeller, jdbcType=VARCHAR},</if>
+			<if test="updateLastAcDate != null">UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE},</if>
+			<if test="updateLastTerm != null">UPDATE_LAST_TERM = #{updateLastTerm, jdbcType=NUMERIC},</if>
+			<if test="updateLastTxnCode != null and updateLastTxnCode != ''">UPDATE_LAST_TXN_CODE = #{updateLastTxnCode, jdbcType=VARCHAR},</if>
+			<if test="logNumber != null and logNumber != ''">LOG_NUMBER = #{logNumber, jdbcType=VARCHAR},</if>
+		</trim>
+		<where>
+			and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+		</where>
+	</update>
+
+	<!--根据业务编号查询记录并降序排列-->
+	<select id="getByOurRefAndDesc" resultMap="pgMatchResultMap" parameterType="com.hisun.kont.pg.entity.PgMatchDO" >
+		select <include refid="table_columns" />
+		from "pg_match"
+		<where>
+			and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}
+		</where>
+		ORDER BY CREATED_TIME DESC
+	</select>
+
+	<!--查询当天批量会计日记录并分组-->
+	<select id="getByAcDateAndGroup" resultType="String" parameterType="com.hisun.kont.pg.entity.PgMatchDO" >
+		select PAGMCH_OUR_REF
+		from "pg_match"
+		<where>
+			and UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE}
+		</where>
+		group by PAGMCH_OUR_REF
+	</select>
+
+</mapper>

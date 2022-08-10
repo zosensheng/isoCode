@@ -1,0 +1,3 @@
+rootProject.name = "kont-pg"
+include "kont-pg-app"
+include 'kont-mx-interface'

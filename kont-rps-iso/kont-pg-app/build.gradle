@@ -1,0 +1,170 @@
+//微服务版本
+plugins {
+    id 'java'
+}
+apply plugin: 'application'
+mainClassName = 'com.hisun.kont.Application'
+group 'com.hisun'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+//单体版本
+//jar {
+//    enabled = true
+//}
+//
+//bootJar {
+//    enabled = false
+//}
+
+dependencies {
+//    compile 'hisun.kont.common.utils:hisun-rps-ecc:1.0.0-SNAPSHOT'
+//    compile 'org.apache.poi:poi'
+//    compile 'org.apache.poi:poi-ooxml'
+//    compile 'org.apache.poi:poi-ooxml-schemas'
+    compile project(":kont-mx-interface")
+    //微服务配置
+    compile 'com.hisun:kont-pg-interface:1.0.1-SNAPSHOT'
+    compile 'com.hisun:kont-pgmx-interface:1.0.2-SNAPSHOT'
+    compile 'com.hisun:kont-pyrm-interface:1.0.1-SNAPSHOT'
+	compile 'com.hisun:kont-igw-interface:1.0.1-SNAPSHOT'
+    compile 'com.hisun:pays-swift-plug:10.2.0-SNAPSHOT'
+    compile 'com.hisun:kont-framework'
+    compile 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'com.oracle:ojdbc6'
+    compile 'com.hisun:kont-metadata-common:2.3.04-SNAPSHOT'
+
+    // 重发job id  单体微服务都要
+    compile 'com.hisun:kont-job-client:2.0.34-SNAPSHOT'
+    //dom4j 解析
+    compile 'jaxen:jaxen'
+
+    //单体版配置
+    /*
+    compile('com.hisun:kont-pg-interface') {
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul-discovery'
+    }
+    compile('com.hisun:kont-pyrm-app') {
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul-discovery'
+    }
+    compile('com.hisun:kont-pyrm-interface') {
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul-discovery'
+    }
+    compile('com.hisun:kont-igw-app') {
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul-discovery'
+    }
+    compile('com.hisun:kont-igw-interface') {
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul-discovery'
+    }
+    compile('com.hisun:pays-swift-plug') {
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul-discovery'
+    }
+    compile('com.hisun:kont-framework') {
+        exclude group: 'com.hisun', module: 'kont-framework-cache'
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+    }
+    compile('com.hisun:kont-framework-interface') {
+        exclude group: 'com.hisun', module: 'kont-framework-cache'
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+    }
+    compile('com.hisun:kont-framework-swagger') {
+        exclude group: 'com.hisun', module: 'kont-framework-cache'
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+    }
+    compile('com.hisun:kont-framework-core') {
+        exclude group: 'com.hisun', module: 'kont-framework-cache'
+        exclude group: 'com.hisun', module: 'kont-framework-rabbitmq'
+        exclude group: 'com.hisun', module: 'kont-framework-txnhist'
+        exclude group: 'com.hisun', module: 'kont-framework-workflow'
+        exclude group: 'com.hisun', module: 'kont-framework-reversal'
+        exclude group: 'com.hisun', module: 'kont-framework-excel'
+        exclude group: 'com.hisun', module: 'kont-framework-transaction'
+        exclude group: 'com.hisun', module: 'kont-framework-cache-db'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-consul'
+    }
+     //dom4j 解析
+    compile 'jaxen:jaxen'
+
+     */
+}

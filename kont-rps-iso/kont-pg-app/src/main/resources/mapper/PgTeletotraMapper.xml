@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.PgTeletotraDao">
+	<resultMap type="com.hisun.kont.pg.entity.PgTeletotraDO" id="pgTeletotraResultMap">
+		<result property="pgswfId" column="PGSWF_ID" jdbcType="VARCHAR"/>
+		<result property="glyph" column="GLYPH" jdbcType="VARCHAR"/>
+		<result property="ucs" column="UCS" jdbcType="VARCHAR"/>
+		<result property="hostCode" column="HOST_CODE" jdbcType="VARCHAR"/>
+		<result property="telexCode" column="TELEX_CODE" jdbcType="VARCHAR"/>
+		<result property="teleAction" column="TELE_ACTION" jdbcType="VARCHAR"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="updatedLastTime" column="UPDATED_LAST_TIME" jdbcType="DATE"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		PGSWF_ID,
+		GLYPH,
+		UCS,
+		HOST_CODE,
+		TELEX_CODE,
+		TELE_ACTION,
+		CREATE_TIME,
+		UPDATED_LAST_TIME
+    </sql>
+	<sql id="entity_properties">
+		#{pgswfId, jdbcType=VARCHAR},
+		#{glyph, jdbcType=VARCHAR},
+		#{ucs, jdbcType=VARCHAR},
+		#{hostCode, jdbcType=VARCHAR},
+		#{telexCode, jdbcType=VARCHAR},
+		#{teleAction, jdbcType=VARCHAR},
+		#{createTime, jdbcType=DATE},
+		#{updatedLastTime, jdbcType=DATE}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="pgswfId != null and pgswfId != ''">and PGSWF_ID = #{pgswfId, jdbcType=VARCHAR}</if>
+            <if test="glyph != null and glyph != ''">and GLYPH = #{glyph, jdbcType=VARCHAR}</if>
+            <if test="ucs != null and ucs != ''">and UCS = #{ucs, jdbcType=VARCHAR}</if>
+            <if test="hostCode != null and hostCode != ''">and HOST_CODE = #{hostCode, jdbcType=VARCHAR}</if>
+            <if test="telexCode != null and telexCode != ''">and TELEX_CODE = #{telexCode, jdbcType=VARCHAR}</if>
+            <if test="teleAction != null and teleAction != ''">and TELE_ACTION = #{teleAction, jdbcType=VARCHAR}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="updatedLastTime != null">and UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="pgswfId != null and pgswfId != ''">and PGSWF_ID like concat(#{pgswfId, jdbcType=VARCHAR},'%')</if>
+					<if test="glyph != null and glyph != ''">and GLYPH like concat(#{glyph, jdbcType=VARCHAR},'%')</if>
+					<if test="ucs != null and ucs != ''">and UCS like concat(#{ucs, jdbcType=VARCHAR},'%')</if>
+					<if test="hostCode != null and hostCode != ''">and HOST_CODE like concat(#{hostCode, jdbcType=VARCHAR},'%')</if>
+					<if test="telexCode != null and telexCode != ''">and TELEX_CODE like concat(#{telexCode, jdbcType=VARCHAR},'%')</if>
+					<if test="teleAction != null and teleAction != ''">and TELE_ACTION like concat(#{teleAction, jdbcType=VARCHAR},'%')</if>
+					<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+					<if test="updatedLastTime != null">and UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.PgTeletotraDO">
+		insert into "pg_teletotra"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "pg_teletotra"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.pgswfId, jdbcType=VARCHAR},
+			#{item.glyph, jdbcType=VARCHAR},
+			#{item.ucs, jdbcType=VARCHAR},
+			#{item.hostCode, jdbcType=VARCHAR},
+			#{item.telexCode, jdbcType=VARCHAR},
+			#{item.teleAction, jdbcType=VARCHAR},
+			#{item.createTime, jdbcType=DATE},
+			#{item.updatedLastTime, jdbcType=DATE}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "pg_teletotra"
+		<where>
+			and PGSWF_ID = #{pgswfId, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.PgTeletotraDO">
+		delete from "pg_teletotra"
+        <where>
+            and PGSWF_ID = #{pgswfId, jdbcType=VARCHAR}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.PgTeletotraDO">
+		delete from "pg_teletotra"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.PgTeletotraDO">
+        update "pg_teletotra"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="pgswfId != null and pgswfId != ''">PGSWF_ID = #{pgswfId, jdbcType=VARCHAR},</if>
+            <if test="glyph != null and glyph != ''">GLYPH = #{glyph, jdbcType=VARCHAR},</if>
+            <if test="ucs != null and ucs != ''">UCS = #{ucs, jdbcType=VARCHAR},</if>
+            <if test="hostCode != null and hostCode != ''">HOST_CODE = #{hostCode, jdbcType=VARCHAR},</if>
+            <if test="telexCode != null and telexCode != ''">TELEX_CODE = #{telexCode, jdbcType=VARCHAR},</if>
+            <if test="teleAction != null and teleAction != ''">TELE_ACTION = #{teleAction, jdbcType=VARCHAR},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="updatedLastTime != null">UPDATED_LAST_TIME = #{updatedLastTime, jdbcType=DATE},</if>
+        </trim>
+        <where>
+            and PGSWF_ID = #{pgswfId, jdbcType=VARCHAR}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="pgTeletotraResultMap">
+        select <include refid="table_columns" />
+        from "pg_teletotra"
+    </select>
+
+    <select id="findList" resultMap="pgTeletotraResultMap">
+        select <include refid="table_columns" />
+        from "pg_teletotra"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgTeletotraResultMap">
+		select <include refid="table_columns" />
+		from "pg_teletotra"
+		<include refid="page_where_like" />
+	</select>
+
+	<select id="get" resultMap="pgTeletotraResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "pg_teletotra"
+        <where>
+            and PGSWF_ID = #{pgswfId, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="pgTeletotraResultMap" parameterType="com.hisun.kont.pg.entity.PgTeletotraDO" >
+        select <include refid="table_columns" />
+        from "pg_teletotra"
+        <where>
+            and PGSWF_ID = #{pgswfId, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+
+
+</mapper>

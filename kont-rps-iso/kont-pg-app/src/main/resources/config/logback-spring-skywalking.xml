@@ -1,0 +1,155 @@
+<configuration>
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="appName"/>
+    <springProperty scope="context" name="rootLevel" source="kont.logger.level" defaultValue="DEBUG"/>
+    <springProperty scope="context" name="kont.log.path" source="kont.log.path" defaultValue="logs"/>
+
+    <!--***************************************************************************-->
+    <!--普通模式(日志逐行输出)，kont平台原有日志输出模式-->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${kont.log.path}/kont-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${kont.log.path}/kont-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <!--日志输出内容，不包含skywalking的taceid-->
+            <pattern>%d %-5level [%-18.18thread] %-36logger{36} - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--***************************************************************************-->
+
+
+    <!--***************************************************************************-->
+    <!--普通模式(日志逐行输出)，kont平台原有日志输出模式，增加了skywalking链路跟踪的TraceId-->
+    <appender name="FILE-TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${kont.log.path}/kont-t-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${kont.log.path}/kont-t-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <!--增加layout配置，使用layout格式化输出日志-->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <!--定义skywalking提供的layout作为格式化输出配置-->
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <!--增加了配置 %X{tid} 输出日志时会替换为TraceId-->
+                <pattern>%d %-5level [%-18.18thread] %-36logger{36} - [%X{requestId:-SYSTEM}] - [%X{tid}]: %msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+    <!--***************************************************************************-->
+
+    <!--***************************************************************************-->
+    <!--ELK模式(配合ELK中logstash的脚本使用)，以JSON格式输出所有的日志，由ELK收集归档至ES库中，日志中增加了TraceId可以和skywalking的链路数据做关联-->
+    <appender name="FILE-ELK-TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${kont.log.path}/kont-elk-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${kont.log.path}/kont-elk-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <!--定义输出模式为layout格式化输出-->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <!--配置自定义实现的layout类-->
+            <layout class="com.hisun.kont.pg.logback.HisunTraceLogLayout"/>
+        </encoder>
+    </appender>
+    <!--***************************************************************************-->
+
+    <!--***************************************************************************-->
+    <!--普通控制台模式，调试时在idea的控制台输出，输出日志格式为普通格式，逐行输出日志-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 该Filter 不要配置到生产，仅仅用于调试环境，用于禁止eureka订阅服务日志干扰调试
+        <filter class="com.hisun.kont.pg.logback.TestFilter" />
+        -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <!--此处加入了skywalking的traceid，若不需要可移除-->
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <!--此处加入了traceid:%X{tid} 不需要可以移除-->
+                <pattern>%d %-5level [%-18.18thread] %-36logger{36} - [%X{requestId:-SYSTEM}] - [%X{tid}]: %msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+    <!--***************************************************************************-->
+
+    <!--***************************************************************************-->
+    <!--skywalking模式，此模式下所有的日志直接由skywalking搜集至链路日志数据中-->
+    <appender name="SKYWALKING" class="com.hisun.kont.pg.logback.HisunTraceLogAppender">
+    </appender>
+    <!--***************************************************************************-->
+
+    <appender name="ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${kont.log.path}/error-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${kont.log.path}/error-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <pattern>%d %-5level [%-18.18thread] %-36logger{36} - [%X{requestId:-SYSTEM}] - [%X{tid}]: %msg%n</pattern>
+            </layout>
+            <!--<layout class="com.hisun.kont.pg.logback.HisunTraceLogLayout"/>-->
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="ERROR-ELK-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${kont.log.path}/error-elk-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${kont.log.path}/error-elk-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>c
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <!--定义输出模式为layout格式化输出-->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <!--配置自定义实现的layout类-->
+            <layout class="com.hisun.kont.pg.logback.HisunTraceLogLayout"/>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="FILE-ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${kont.log.path}/access-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${kont.log.path}/access-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}] - [%X{tid}]: %msg%n</pattern>
+            </layout>
+            <!--<layout class="com.hisun.kont.pg.logback.HisunTraceLogLayout"/>-->
+        </encoder>
+    </appender>
+
+    <logger name="com.hisun.kont.framework.aop.ControllerAspect$ReceiveRequestLog" level="INFO" additivity="true">
+        <appender-ref ref="FILE-ACCESS"/>
+    </logger>
+
+    <!--***************************************************************************-->
+    <!--配置日志规则，name为名称空间，标志此名称空间下的所有的日志由下面配置的appender来输出-->
+    <!--可以配置多个，若多配置则日志会输出多份-->
+    <logger name="com.hisun.kont" level="INFO" additivity="true">
+        <!--&lt;!&ndash;普通模式，输出日志至文件&ndash;&gt;-->
+        <!--<appender-ref ref="FILE"/>-->
+        <!--&lt;!&ndash;普通模式，输出日志至文件，日志中增加traceid&ndash;&gt;-->
+        <!--<appender-ref ref="FILE-TRACE"/>-->
+        <!--&lt;!&ndash;ELK模式，输出日志由ELK收集存档，与ELK组件配置使用&ndash;&gt;-->
+        <appender-ref ref="FILE-ELK-TRACE"/>
+        <!--输出日志至skywalking链路数据-->
+        <!--<appender-ref ref="SKYWALKING"/>-->
+    </logger>
+    <!--***************************************************************************-->
+
+    <root level="${rootLevel}">
+        <springProfile name="dev,dev2,sit,sit2,uat, prd">
+            <appender-ref ref="FILE-ELK-TRACE"/>
+            <appender-ref ref="ERROR-ELK-FILE"/>
+        </springProfile>
+    </root>
+</configuration>

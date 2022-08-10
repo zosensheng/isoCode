@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.mx.dao.PgMxMstDao">
+	<resultMap type="com.hisun.kont.mx.entity.PgMxMstDO" id="pgMxMstResultMap">
+		<result property="bizMsgIdr" column="BIZ_MSG_IDR" jdbcType="VARCHAR"/>
+		<result property="frId" column="FR_ID" jdbcType="VARCHAR"/>
+		<result property="toId" column="TO_ID" jdbcType="VARCHAR"/>
+		<result property="bizSvc" column="BIZ_SVC" jdbcType="VARCHAR"/>
+		<result property="creDt" column="CRE_DT" jdbcType="DATE"/>
+		<result property="pssbleDplct" column="PSSBLE_DPLCT" jdbcType="VARCHAR"/>
+		<result property="party" column="PARTY" jdbcType="VARCHAR"/>
+		<result property="msgId" column="MSG_ID" jdbcType="VARCHAR"/>
+		<result property="msgDefIdr" column="MSG_DEF_IDR" jdbcType="VARCHAR"/>
+		<result property="mtStr" column="MT_STR" jdbcType="CLOB"/>
+		<result property="mtStatus" column="MT_STATUS" jdbcType="VARCHAR"/>
+		<result property="frModule" column="FR_MODULE" jdbcType="VARCHAR"/>
+		<result property="manualFg" column="MANUAL_FG" jdbcType="VARCHAR"/>
+		<result property="futureFg" column="FUTURE_FG" jdbcType="VARCHAR"/>
+		<result property="srcSys" column="SRC_SYS" jdbcType="VARCHAR"/>
+		<result property="targetSys" column="TARGET_SYS" jdbcType="VARCHAR"/>
+		<result property="gwMsgStatus" column="GW_MSG_STATUS" jdbcType="VARCHAR"/>
+		<result property="acDate" column="AC_DATE" jdbcType="DATE"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="modifyTime" column="MODIFY_TIME" jdbcType="DATE"/>
+		<result property="lastUpdateTlr" column="LAST_UPDATE_TLR" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		BIZ_MSG_IDR,
+		FR_ID,
+		TO_ID,
+		BIZ_SVC,
+		CRE_DT,
+		PSSBLE_DPLCT,
+		PARTY,
+		MSG_ID,
+		MSG_DEF_IDR,
+		MT_STR,
+		MT_STATUS,
+		FR_MODULE,
+		MANUAL_FG,
+		FUTURE_FG,
+		SRC_SYS,
+		TARGET_SYS,
+		GW_MSG_STATUS,
+		AC_DATE,
+		CREATE_TIME,
+		MODIFY_TIME,
+		LAST_UPDATE_TLR
+    </sql>
+	<sql id="entity_properties">
+		#{bizMsgIdr, jdbcType=VARCHAR},
+		#{frId, jdbcType=VARCHAR},
+		#{toId, jdbcType=VARCHAR},
+		#{bizSvc, jdbcType=VARCHAR},
+		#{creDt, jdbcType=DATE},
+		#{pssbleDplct, jdbcType=VARCHAR},
+		#{party, jdbcType=VARCHAR},
+		#{msgId, jdbcType=VARCHAR},
+		#{msgDefIdr, jdbcType=VARCHAR},
+		#{mtStr, jdbcType=CLOB},
+		#{mtStatus, jdbcType=VARCHAR},
+		#{frModule, jdbcType=VARCHAR},
+		#{manualFg, jdbcType=VARCHAR},
+		#{futureFg, jdbcType=VARCHAR},
+		#{srcSys, jdbcType=VARCHAR},
+		#{targetSys, jdbcType=VARCHAR},
+		#{gwMsgStatus, jdbcType=VARCHAR},
+		#{acDate, jdbcType=DATE},
+		#{createTime, jdbcType=DATE},
+		#{modifyTime, jdbcType=DATE},
+		#{lastUpdateTlr, jdbcType=VARCHAR}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="bizMsgIdr != null and bizMsgIdr != ''">and BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR}</if>
+            <if test="frId != null and frId != ''">and FR_ID = #{frId, jdbcType=VARCHAR}</if>
+            <if test="toId != null and toId != ''">and TO_ID = #{toId, jdbcType=VARCHAR}</if>
+            <if test="bizSvc != null and bizSvc != ''">and BIZ_SVC = #{bizSvc, jdbcType=VARCHAR}</if>
+			<if test="creDt != null">and CRE_DT = #{creDt, jdbcType=DATE}</if>
+            <if test="pssbleDplct != null and pssbleDplct != ''">and PSSBLE_DPLCT = #{pssbleDplct, jdbcType=VARCHAR}</if>
+            <if test="party != null and party != ''">and PARTY = #{party, jdbcType=VARCHAR}</if>
+            <if test="msgId != null and msgId != ''">and MSG_ID = #{msgId, jdbcType=VARCHAR}</if>
+            <if test="msgDefIdr != null and msgDefIdr != ''">and MSG_DEF_IDR = #{msgDefIdr, jdbcType=VARCHAR}</if>
+            <if test="mtStr != null and mtStr != ''">and MT_STR = #{mtStr, jdbcType=CLOB}</if>
+            <if test="mtStatus != null and mtStatus != ''">and MT_STATUS = #{mtStatus, jdbcType=VARCHAR}</if>
+            <if test="frModule != null and frModule != ''">and FR_MODULE = #{frModule, jdbcType=VARCHAR}</if>
+            <if test="manualFg != null and manualFg != ''">and MANUAL_FG = #{manualFg, jdbcType=VARCHAR}</if>
+            <if test="futureFg != null and futureFg != ''">and FUTURE_FG = #{futureFg, jdbcType=VARCHAR}</if>
+            <if test="srcSys != null and srcSys != ''">and SRC_SYS = #{srcSys, jdbcType=VARCHAR}</if>
+            <if test="targetSys != null and targetSys != ''">and TARGET_SYS = #{targetSys, jdbcType=VARCHAR}</if>
+            <if test="gwMsgStatus != null and gwMsgStatus != ''">and GW_MSG_STATUS = #{gwMsgStatus, jdbcType=VARCHAR}</if>
+			<if test="acDate != null">and AC_DATE = #{acDate, jdbcType=DATE}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+            <if test="lastUpdateTlr != null and lastUpdateTlr != ''">and LAST_UPDATE_TLR = #{lastUpdateTlr, jdbcType=VARCHAR}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="bizMsgIdr != null and bizMsgIdr != ''">and BIZ_MSG_IDR like concat(#{bizMsgIdr, jdbcType=VARCHAR},'%')</if>
+					<if test="frId != null and frId != ''">and FR_ID like concat(#{frId, jdbcType=VARCHAR},'%')</if>
+					<if test="toId != null and toId != ''">and TO_ID like concat(#{toId, jdbcType=VARCHAR},'%')</if>
+					<if test="bizSvc != null and bizSvc != ''">and BIZ_SVC like concat(#{bizSvc, jdbcType=VARCHAR},'%')</if>
+					<if test="creDt != null">and CRE_DT = #{creDt, jdbcType=DATE}</if>
+					<if test="pssbleDplct != null and pssbleDplct != ''">and PSSBLE_DPLCT like concat(#{pssbleDplct, jdbcType=VARCHAR},'%')</if>
+					<if test="party != null and party != ''">and PARTY like concat(#{party, jdbcType=VARCHAR},'%')</if>
+					<if test="msgId != null and msgId != ''">and MSG_ID like concat(#{msgId, jdbcType=VARCHAR},'%')</if>
+					<if test="msgDefIdr != null and msgDefIdr != ''">and MSG_DEF_IDR like concat(#{msgDefIdr, jdbcType=VARCHAR},'%')</if>
+					<if test="mtStr != null and mtStr != ''">and MT_STR like concat(#{mtStr, jdbcType=CLOB},'%')</if>
+					<if test="mtStatus != null and mtStatus != ''">and MT_STATUS like concat(#{mtStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="frModule != null and frModule != ''">and FR_MODULE like concat(#{frModule, jdbcType=VARCHAR},'%')</if>
+					<if test="manualFg != null and manualFg != ''">and MANUAL_FG like concat(#{manualFg, jdbcType=VARCHAR},'%')</if>
+					<if test="futureFg != null and futureFg != ''">and FUTURE_FG like concat(#{futureFg, jdbcType=VARCHAR},'%')</if>
+					<if test="srcSys != null and srcSys != ''">and SRC_SYS like concat(#{srcSys, jdbcType=VARCHAR},'%')</if>
+					<if test="targetSys != null and targetSys != ''">and TARGET_SYS like concat(#{targetSys, jdbcType=VARCHAR},'%')</if>
+					<if test="gwMsgStatus != null and gwMsgStatus != ''">and GW_MSG_STATUS like concat(#{gwMsgStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="acDate != null">and AC_DATE = #{acDate, jdbcType=DATE}</if>
+					<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+					<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+					<if test="lastUpdateTlr != null and lastUpdateTlr != ''">and LAST_UPDATE_TLR like concat(#{lastUpdateTlr, jdbcType=VARCHAR},'%')</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.mx.entity.PgMxMstDO">
+		insert into "PG_MX_MST"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "PG_MX_MST"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.bizMsgIdr, jdbcType=VARCHAR},
+			#{item.frId, jdbcType=VARCHAR},
+			#{item.toId, jdbcType=VARCHAR},
+			#{item.bizSvc, jdbcType=VARCHAR},
+			#{item.creDt, jdbcType=DATE},
+			#{item.pssbleDplct, jdbcType=VARCHAR},
+			#{item.party, jdbcType=VARCHAR},
+			#{item.msgId, jdbcType=VARCHAR},
+			#{item.msgDefIdr, jdbcType=VARCHAR},
+			#{item.mtStr, jdbcType=CLOB},
+			#{item.mtStatus, jdbcType=VARCHAR},
+			#{item.frModule, jdbcType=VARCHAR},
+			#{item.manualFg, jdbcType=VARCHAR},
+			#{item.futureFg, jdbcType=VARCHAR},
+			#{item.srcSys, jdbcType=VARCHAR},
+			#{item.targetSys, jdbcType=VARCHAR},
+			#{item.gwMsgStatus, jdbcType=VARCHAR},
+			#{item.acDate, jdbcType=DATE},
+			#{item.createTime, jdbcType=DATE},
+			#{item.modifyTime, jdbcType=DATE},
+			#{item.lastUpdateTlr, jdbcType=VARCHAR}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "PG_MX_MST"
+		<where>
+			and BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.mx.entity.PgMxMstDO">
+		delete from "PG_MX_MST"
+        <where>
+            and BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.mx.entity.PgMxMstDO">
+		delete from "PG_MX_MST"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.mx.entity.PgMxMstDO">
+        update "PG_MX_MST"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="bizMsgIdr != null and bizMsgIdr != ''">BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR},</if>
+            <if test="frId != null and frId != ''">FR_ID = #{frId, jdbcType=VARCHAR},</if>
+            <if test="toId != null and toId != ''">TO_ID = #{toId, jdbcType=VARCHAR},</if>
+            <if test="bizSvc != null and bizSvc != ''">BIZ_SVC = #{bizSvc, jdbcType=VARCHAR},</if>
+			<if test="creDt != null">CRE_DT = #{creDt, jdbcType=DATE},</if>
+            <if test="pssbleDplct != null and pssbleDplct != ''">PSSBLE_DPLCT = #{pssbleDplct, jdbcType=VARCHAR},</if>
+            <if test="party != null and party != ''">PARTY = #{party, jdbcType=VARCHAR},</if>
+            <if test="msgId != null and msgId != ''">MSG_ID = #{msgId, jdbcType=VARCHAR},</if>
+            <if test="msgDefIdr != null and msgDefIdr != ''">MSG_DEF_IDR = #{msgDefIdr, jdbcType=VARCHAR},</if>
+            <if test="mtStr != null and mtStr != ''">MT_STR = #{mtStr, jdbcType=CLOB},</if>
+            <if test="mtStatus != null and mtStatus != ''">MT_STATUS = #{mtStatus, jdbcType=VARCHAR},</if>
+            <if test="frModule != null and frModule != ''">FR_MODULE = #{frModule, jdbcType=VARCHAR},</if>
+            <if test="manualFg != null and manualFg != ''">MANUAL_FG = #{manualFg, jdbcType=VARCHAR},</if>
+            <if test="futureFg != null and futureFg != ''">FUTURE_FG = #{futureFg, jdbcType=VARCHAR},</if>
+            <if test="srcSys != null and srcSys != ''">SRC_SYS = #{srcSys, jdbcType=VARCHAR},</if>
+            <if test="targetSys != null and targetSys != ''">TARGET_SYS = #{targetSys, jdbcType=VARCHAR},</if>
+            <if test="gwMsgStatus != null and gwMsgStatus != ''">GW_MSG_STATUS = #{gwMsgStatus, jdbcType=VARCHAR},</if>
+			<if test="acDate != null">AC_DATE = #{acDate, jdbcType=DATE},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="modifyTime != null">MODIFY_TIME = #{modifyTime, jdbcType=DATE},</if>
+            <if test="lastUpdateTlr != null and lastUpdateTlr != ''">LAST_UPDATE_TLR = #{lastUpdateTlr, jdbcType=VARCHAR},</if>
+        </trim>
+        <where>
+            and BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR}
+        </where>
+    </update>
+
+    <update id="updateMtStatus">
+		update "PG_MX_MST" set MT_STATUS = #{mtStatus}
+		<where>
+			and BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR}
+		</where>
+	</update>
+
+
+    <select id="findAll" resultMap="pgMxMstResultMap">
+        select <include refid="table_columns" />
+        from "PG_MX_MST"
+    </select>
+
+    <select id="findList" resultMap="pgMxMstResultMap">
+        select <include refid="table_columns" />
+        from "PG_MX_MST"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgMxMstResultMap">
+		select <include refid="table_columns" />
+		from "PG_MX_MST"
+		<include refid="page_where_like" />
+	</select>
+
+	<select id="get" resultMap="pgMxMstResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "PG_MX_MST"
+        <where>
+            and BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="pgMxMstResultMap" parameterType="com.hisun.kont.mx.entity.PgMxMstDO" >
+        select <include refid="table_columns" />
+        from "PG_MX_MST"
+        <where>
+            and BIZ_MSG_IDR = #{bizMsgIdr, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+
+
+</mapper>

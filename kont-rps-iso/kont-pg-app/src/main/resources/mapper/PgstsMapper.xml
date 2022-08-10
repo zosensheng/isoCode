@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.PgstsDao">
+	<resultMap type="com.hisun.kont.pg.entity.PgstsDO" id="pgstsResultMap">
+		<result property="bhSndlt" column="BH_SNDLT" jdbcType="VARCHAR"/>
+		<result property="ahRcvlt" column="AH_RCVLT" jdbcType="VARCHAR"/>
+		<result property="ahMpro" column="AH_MPRO" jdbcType="VARCHAR"/>
+		<result property="ohHkl" column="OH_HKL" jdbcType="VARCHAR"/>
+		<result property="ohMuref" column="OH_MUREF" jdbcType="VARCHAR"/>
+		<result property="ohCov" column="OH_COV" jdbcType="VARCHAR"/>
+		<result property="ohGpiRef" column="OH_GPI_REF" jdbcType="VARCHAR"/>
+		<result property="trn" column="TRN" jdbcType="VARCHAR"/>
+		<result property="rtrn" column="RTRN" jdbcType="VARCHAR"/>
+		<result property="mtSeq" column="MT_SEQ" jdbcType="NUMERIC"/>
+		<result property="mtRetryFlag" column="MT_RETRY_FLAG" jdbcType="VARCHAR"/>
+		<result property="mtPdmNm" column="MT_PDM_NM" jdbcType="VARCHAR"/>
+		<result property="mtPdeNm" column="MT_PDE_NM" jdbcType="VARCHAR"/>
+		<result property="mtStr" column="MT_STR" jdbcType="VARCHAR"/>
+		<result property="mtStatus" column="MT_STATUS" jdbcType="VARCHAR"/>
+		<result property="gpiStatus" column="GPI_STATUS" jdbcType="VARCHAR"/>
+		<result property="createdTime" column="CREATED_TIME" jdbcType="DATE"/>
+		<result property="updateLastTime" column="UPDATE_LAST_TIME" jdbcType="DATE"/>
+		<result property="mtBean" column="MT_BEAN" jdbcType="VARCHAR"/>
+		<result property="updateLastTerm" column="UPDATE_LAST_TERM" jdbcType="NUMERIC"/>
+		<result property="updateLastTeller" column="UPDATE_LAST_TELLER" jdbcType="VARCHAR"/>
+		<result property="updateLastAuthor" column="UPDATE_LAST_AUTHOR" jdbcType="VARCHAR"/>
+		<result property="authorReminderMsg" column="AUTHOR_REMINDER_MSG" jdbcType="VARCHAR"/>
+		<result property="authorComment" column="AUTHOR_COMMENT" jdbcType="VARCHAR"/>
+		<result property="recordStatusNoauthor" column="RECORD_STATUS_NOAUTHOR" jdbcType="VARCHAR"/>
+		<result property="updateLastTxnCode" column="UPDATE_LAST_TXN_CODE" jdbcType="VARCHAR"/>
+		<result property="rejectCode" column="REJECT_CODE" jdbcType="VARCHAR"/>
+		<result property="clearReqFlag" column="CLEAR_REQ_FLAG" jdbcType="VARCHAR"/>
+		<result property="mtMessage" column="MT_MESSAGE" jdbcType="VARCHAR"/>
+		<result property="srcSys" column="SRC_SYS" jdbcType="VARCHAR"/>
+		<result property="targetSys" column="TARGET_SYS" jdbcType="VARCHAR"/>
+		<result property="msgMethod" column="MSG_METHOD" jdbcType="VARCHAR"/>
+		<result property="msgSrc" column="MSG_SRC" jdbcType="VARCHAR"/>
+		<result property="mtTemporary" column="MT_TEMPORARY" jdbcType="VARCHAR"/>
+		<result property="frModule" column="FR_MODULE" jdbcType="VARCHAR"/>
+		<result property="manualFg" column="MANUAL_FG" jdbcType="VARCHAR"/>
+		<result property="gpiReasonCode" column="GPI_REASON_CODE" jdbcType="VARCHAR"/>
+		<result property="gpiFlag" column="GPI_FLAG" jdbcType="VARCHAR"/>
+		<result property="msgNo" column="MSG_NO" jdbcType="VARCHAR"/>
+		<result property="bhSessNo" column="BH_SESS_NO" jdbcType="VARCHAR"/>
+		<result property="bhIsn" column="BH_ISN" jdbcType="VARCHAR"/>
+		<result property="ahMt" column="AH_MT" jdbcType="VARCHAR"/>
+		<result property="ahioFlag" column="AHIO_FLAG" jdbcType="VARCHAR"/>
+		<result property="futureFg" column="FUTURE_FG" jdbcType="VARCHAR"/>
+		<result property="acDate" column="AC_DATE" jdbcType="DATE"/>
+		<result property="traditionalFlag" column="TRADITIONAL_FLAG" jdbcType="VARCHAR"/>
+		<result property="pagmchOurRef" column="PAGMCH_OUR_REF" jdbcType="VARCHAR"/>
+		<result property="refSub" column="REF_SUB" jdbcType="VARCHAR"/>
+		<result property="yourChl" column="YOUR_CHL" jdbcType="VARCHAR"/>
+		<result property="incomeDate" column="INCOME_DATE" jdbcType="VARCHAR"/>
+		<result property="incomeTime" column="INCOME_TIME" jdbcType="VARCHAR"/>
+		<result property="incomeTimeZone" column="INCOME_TIME_ZONE" jdbcType="VARCHAR"/>
+		<result property="updateLastAcDate" column="UPDATE_LAST_AC_DATE" jdbcType="DATE"/>
+		<result property="logNumber" column="LOG_NUMBER" jdbcType="VARCHAR"/>
+		<result property="rejectedReason" column="REJECTED_REASON" jdbcType="VARCHAR"/>
+		<result property="gwMsgStatus" column="GW_MSG_STATUS" jdbcType="VARCHAR"/>
+		<result property="txncode" column="TXNCODE" jdbcType="VARCHAR"/>
+		<result property="gpiDate" column="GPI_DATE" jdbcType="VARCHAR"/>
+		<result property="gpiTime" column="GPI_TIME" jdbcType="VARCHAR"/>
+		<result property="gpiTimezone" column="GPI_TIMEZONE" jdbcType="VARCHAR"/>
+		<result property="retransmissionId" column="RETRANSMISSION_ID" jdbcType="VARCHAR"/>
+		<result property="gpcFlag" column="GPC_FLAG" jdbcType="VARCHAR"/>
+		<result property="mtNarrat" column="MT_NARRAT" jdbcType="VARCHAR"/>
+		<result property="voidFlag" column="VOID_FLAG" jdbcType="VARCHAR"/>
+		<result property="mxType" column="MX_TYPE" jdbcType="VARCHAR"/>
+		<result property="mxFlag" column="MX_FLAG" jdbcType="VARCHAR"/>
+		<result property="mxStr" column="MX_STR" jdbcType="VARCHAR"/>
+		<result property="mxBussService" column="MX_BUSS_SERVICE" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="table_columns">
+		BH_SNDLT,
+		AH_RCVLT,
+		AH_MPRO,
+		OH_HKL,
+		OH_MUREF,
+		OH_COV,
+		OH_GPI_REF,
+		TRN,
+		RTRN,
+		MT_SEQ,
+		MT_RETRY_FLAG,
+		MT_PDM_NM,
+		MT_PDE_NM,
+		MT_STR,
+		MT_STATUS,
+		GPI_STATUS,
+		CREATED_TIME,
+		UPDATE_LAST_TIME,
+		MT_BEAN,
+		UPDATE_LAST_TERM,
+		UPDATE_LAST_TELLER,
+		UPDATE_LAST_AUTHOR,
+		AUTHOR_REMINDER_MSG,
+		AUTHOR_COMMENT,
+		RECORD_STATUS_NOAUTHOR,
+		UPDATE_LAST_TXN_CODE,
+		REJECT_CODE,
+		CLEAR_REQ_FLAG,
+		MT_MESSAGE,
+		SRC_SYS,
+		TARGET_SYS,
+		MSG_METHOD,
+		MSG_SRC,
+		MT_TEMPORARY,
+		FR_MODULE,
+		MANUAL_FG,
+		GPI_REASON_CODE,
+		GPI_FLAG,
+		MSG_NO,
+		BH_SESS_NO,
+		BH_ISN,
+		AH_MT,
+		AHIO_FLAG,
+        FUTURE_FG,
+        AC_DATE,
+		TRADITIONAL_FLAG,
+		PAGMCH_OUR_REF,
+		REF_SUB,
+		YOUR_CHL,
+		INCOME_DATE,
+		INCOME_TIME,
+		INCOME_TIME_ZONE,
+		UPDATE_LAST_AC_DATE,
+		LOG_NUMBER,
+		REJECTED_REASON,
+		GW_MSG_STATUS,
+		TXNCODE,
+		GPI_DATE,
+		GPI_TIME,
+		GPI_TIMEZONE,
+		RETRANSMISSION_ID,
+		GPC_FLAG,
+		MT_NARRAT,
+		VOID_FLAG,
+		MX_TYPE,
+		MX_STR,
+		MX_FLAG,
+		MX_BUSS_SERVICE
+	</sql>
+	<sql id="entity_properties">
+		#{bhSndlt, jdbcType=VARCHAR},
+		#{ahRcvlt, jdbcType=VARCHAR},
+		#{ahMpro, jdbcType=VARCHAR},
+		#{ohHkl, jdbcType=VARCHAR},
+		#{ohMuref, jdbcType=VARCHAR},
+		#{ohCov, jdbcType=VARCHAR},
+		#{ohGpiRef, jdbcType=VARCHAR},
+		#{trn, jdbcType=VARCHAR},
+		#{rtrn, jdbcType=VARCHAR},
+		#{mtSeq, jdbcType=NUMERIC},
+		#{mtRetryFlag, jdbcType=VARCHAR},
+		#{mtPdmNm, jdbcType=VARCHAR},
+		#{mtPdeNm, jdbcType=VARCHAR},
+		#{mtStr, jdbcType=VARCHAR},
+		#{mtStatus, jdbcType=VARCHAR},
+		#{gpiStatus, jdbcType=VARCHAR},
+		#{createdTime, jdbcType=DATE},
+		#{updateLastTime, jdbcType=DATE},
+		#{mtBean, jdbcType=VARCHAR},
+		#{updateLastTerm, jdbcType=NUMERIC},
+		#{updateLastTeller, jdbcType=VARCHAR},
+		#{updateLastAuthor, jdbcType=VARCHAR},
+		#{authorReminderMsg, jdbcType=VARCHAR},
+		#{authorComment, jdbcType=VARCHAR},
+		#{recordStatusNoauthor, jdbcType=VARCHAR},
+		#{updateLastTxnCode, jdbcType=VARCHAR},
+		#{rejectCode, jdbcType=VARCHAR},
+		#{clearReqFlag, jdbcType=VARCHAR},
+		#{mtMessage, jdbcType=VARCHAR},
+		#{srcSys, jdbcType=VARCHAR},
+		#{targetSys, jdbcType=VARCHAR},
+		#{msgMethod, jdbcType=VARCHAR},
+		#{msgSrc, jdbcType=VARCHAR},
+		#{mtTemporary, jdbcType=VARCHAR},
+		#{frModule, jdbcType=VARCHAR},
+		#{manualFg, jdbcType=VARCHAR},
+		#{gpiReasonCode, jdbcType=VARCHAR},
+		#{gpiFlag, jdbcType=VARCHAR},
+		#{msgNo, jdbcType=VARCHAR},
+		#{bhSessNo, jdbcType=VARCHAR},
+		#{bhIsn, jdbcType=VARCHAR},
+		#{ahMt, jdbcType=VARCHAR},
+		#{ahioFlag, jdbcType=VARCHAR},
+		#{futureFg, jdbcType=VARCHAR},
+		#{acDate, jdbcType=DATE},
+		#{traditionalFlag, jdbcType=VARCHAR},
+		#{pagmchOurRef, jdbcType=VARCHAR},
+		#{refSub, jdbcType=VARCHAR},
+		#{yourChl, jdbcType=VARCHAR},
+		#{incomeDate, jdbcType=VARCHAR},
+		#{incomeTime, jdbcType=VARCHAR},
+		#{incomeTimeZone, jdbcType=VARCHAR},
+		#{updateLastAcDate, jdbcType=DATE},
+		#{logNumber, jdbcType=VARCHAR},
+		#{rejectedReason, jdbcType=VARCHAR},
+		#{gwMsgStatus, jdbcType=VARCHAR},
+		#{txncode, jdbcType=VARCHAR},
+		#{gpiDate, jdbcType=VARCHAR},
+		#{gpiTime, jdbcType=VARCHAR},
+		#{gpiTimezone, jdbcType=VARCHAR},
+		#{retransmissionId, jdbcType=VARCHAR},
+		#{gpcFlag, jdbcType=VARCHAR},
+		#{mtNarrat, jdbcType=VARCHAR},
+		#{voidFlag, jdbcType=VARCHAR},
+		#{mxType, jdbcType=VARCHAR},
+		#{mxStr, jdbcType=VARCHAR},
+		#{mxFlag, jdbcType=VARCHAR},
+		#{mxBussService, jdbcType=VARCHAR}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="bhSndlt != null and bhSndlt != ''">and BH_SNDLT = #{bhSndlt, jdbcType=VARCHAR}</if>
+            <if test="ahRcvlt != null and ahRcvlt != ''">and AH_RCVLT = #{ahRcvlt, jdbcType=VARCHAR}</if>
+            <if test="ahMpro != null and ahMpro != ''">and AH_MPRO = #{ahMpro, jdbcType=VARCHAR}</if>
+            <if test="ohHkl != null and ohHkl != ''">and OH_HKL = #{ohHkl, jdbcType=VARCHAR}</if>
+            <if test="ohMuref != null and ohMuref != ''">and OH_MUREF = #{ohMuref, jdbcType=VARCHAR}</if>
+            <if test="ohCov != null and ohCov != ''">and OH_COV = #{ohCov, jdbcType=VARCHAR}</if>
+            <if test="ohGpiRef != null and ohGpiRef != ''">and OH_GPI_REF = #{ohGpiRef, jdbcType=VARCHAR}</if>
+            <if test="trn != null and trn != ''">and TRN = #{trn, jdbcType=VARCHAR}</if>
+            <if test="rtrn != null and rtrn != ''">and RTRN = #{rtrn, jdbcType=VARCHAR}</if>
+			<if test="mtSeq != null">and MT_SEQ = #{mtSeq, jdbcType=NUMERIC}</if>
+            <if test="mtRetryFlag != null and mtRetryFlag != ''">and MT_RETRY_FLAG = #{mtRetryFlag, jdbcType=VARCHAR}</if>
+            <if test="mtPdmNm != null and mtPdmNm != ''">and MT_PDM_NM = #{mtPdmNm, jdbcType=VARCHAR}</if>
+            <if test="mtPdeNm != null and mtPdeNm != ''">and MT_PDE_NM = #{mtPdeNm, jdbcType=VARCHAR}</if>
+            <if test="mtStr != null and mtStr != ''">and MT_STR = #{mtStr, jdbcType=VARCHAR}</if>
+            <if test="mtStatus != null and mtStatus != ''">and MT_STATUS = #{mtStatus, jdbcType=VARCHAR}</if>
+            <if test="gpiStatus != null and gpiStatus != ''">and GPI_STATUS = #{gpiStatus, jdbcType=VARCHAR}</if>
+			<if test="createdTime != null">and CREATED_TIME = #{createdTime, jdbcType=DATE}</if>
+			<if test="updateLastTime != null">and UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE}</if>
+            <if test="mtBean != null and mtBean != ''">and MT_BEAN = #{mtBean, jdbcType=VARCHAR}</if>
+			<if test="updateLastTerm != null">and UPDATE_LAST_TERM = #{updateLastTerm, jdbcType=NUMERIC}</if>
+            <if test="updateLastTeller != null and updateLastTeller != ''">and UPDATE_LAST_TELLER = #{updateLastTeller, jdbcType=VARCHAR}</if>
+            <if test="updateLastAuthor != null and updateLastAuthor != ''">and UPDATE_LAST_AUTHOR = #{updateLastAuthor, jdbcType=VARCHAR}</if>
+            <if test="authorReminderMsg != null and authorReminderMsg != ''">and AUTHOR_REMINDER_MSG = #{authorReminderMsg, jdbcType=VARCHAR}</if>
+            <if test="authorComment != null and authorComment != ''">and AUTHOR_COMMENT = #{authorComment, jdbcType=VARCHAR}</if>
+            <if test="recordStatusNoauthor != null and recordStatusNoauthor != ''">and RECORD_STATUS_NOAUTHOR = #{recordStatusNoauthor, jdbcType=VARCHAR}</if>
+            <if test="updateLastTxnCode != null and updateLastTxnCode != ''">and UPDATE_LAST_TXN_CODE = #{updateLastTxnCode, jdbcType=VARCHAR}</if>
+            <if test="rejectCode != null and rejectCode != ''">and REJECT_CODE = #{rejectCode, jdbcType=VARCHAR}</if>
+            <if test="clearReqFlag != null and clearReqFlag != ''">and CLEAR_REQ_FLAG = #{clearReqFlag, jdbcType=VARCHAR}</if>
+            <if test="mtMessage != null and mtMessage != ''">and MT_MESSAGE = #{mtMessage, jdbcType=VARCHAR}</if>
+            <if test="srcSys != null and srcSys != ''">and SRC_SYS = #{srcSys, jdbcType=VARCHAR}</if>
+            <if test="targetSys != null and targetSys != ''">and TARGET_SYS = #{targetSys, jdbcType=VARCHAR}</if>
+            <if test="msgMethod != null and msgMethod != ''">and MSG_METHOD = #{msgMethod, jdbcType=VARCHAR}</if>
+			<if test="msgSrc != null and msgSrc != ''">and MSG_SRC = #{msgSrc, jdbcType=VARCHAR}</if>
+            <if test="mtTemporary != null and mtTemporary != ''">and MT_TEMPORARY = #{mtTemporary, jdbcType=VARCHAR}</if>
+            <if test="frModule != null and frModule != ''">and FR_MODULE = #{frModule, jdbcType=VARCHAR}</if>
+            <if test="manualFg != null and manualFg != ''">and MANUAL_FG = #{manualFg, jdbcType=VARCHAR}</if>
+			<if test="gpiReasonCode != null and gpiReasonCode != ''">and GPI_REASON_CODE = #{gpiReasonCode, jdbcType=VARCHAR}</if>
+			<if test="gpiFlag != null and gpiFlag != ''">and GPI_FLAG = #{gpiFlag, jdbcType=VARCHAR}</if>
+            <if test="msgNo != null and msgNo != ''">and MSG_NO = #{msgNo, jdbcType=VARCHAR}</if>
+            <if test="bhSessNo != null and bhSessNo != ''">and BH_SESS_NO = #{bhSessNo, jdbcType=VARCHAR}</if>
+            <if test="bhIsn != null and bhIsn != ''">and BH_ISN = #{bhIsn, jdbcType=VARCHAR}</if>
+            <if test="ahMt != null and ahMt != ''">and AH_MT = #{ahMt, jdbcType=VARCHAR}</if>
+            <if test="ahioFlag != null and ahioFlag != ''">and AHIO_FLAG = #{ahioFlag, jdbcType=VARCHAR}</if>
+			<if test="futureFg != null and futureFg != ''">and FUTURE_FG = #{futureFg, jdbcType=VARCHAR}</if>
+			<if test="acDate != null">and AC_DATE = #{acDate, jdbcType=DATE}</if>
+			<if test="traditionalFlag != null and traditionalFlag != ''">and TRADITIONAL_FLAG = #{traditionalFlag, jdbcType=VARCHAR}</if>
+			<if test="pagmchOurRef != null and pagmchOurRef != ''">and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}</if>
+			<if test="refSub != null and refSub != ''">and REF_SUB = #{refSub, jdbcType=VARCHAR}</if>
+			<if test="yourChl != null and yourChl != ''">and YOUR_CHL = #{yourChl, jdbcType=VARCHAR}</if>
+			<if test="incomeDate != null and incomeDate != ''">and INCOME_DATE = #{incomeDate, jdbcType=VARCHAR}</if>
+			<if test="incomeTime != null and incomeTime != ''">and INCOME_TIME = #{incomeTime, jdbcType=VARCHAR}</if>
+			<if test="incomeTimeZone != null and incomeTimeZone != ''">and INCOME_TIME_ZONE = #{incomeTimeZone, jdbcType=VARCHAR}</if>
+			<if test="updateLastAcDate != null">and UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE}</if>
+			<if test="logNumber != null and logNumber != ''">and LOG_NUMBER = #{logNumber, jdbcType=VARCHAR}</if>
+			<if test="rejectedReason != null and rejectedReason != ''">and REJECTED_REASON = #{rejectedReason, jdbcType=VARCHAR}</if>
+			<if test="gwMsgStatus != null and gwMsgStatus != ''">and GW_MSG_STATUS = #{gwMsgStatus, jdbcType=VARCHAR}</if>
+			<if test="txncode != null and txncode != ''">and TXNCODE = #{txncode, jdbcType=VARCHAR}</if>
+			<if test="gpiDate != null and gpiDate != ''">and GPI_DATE = #{gpiDate, jdbcType=VARCHAR}</if>
+			<if test="gpiTime != null and gpiTime != ''">and GPI_TIME = #{gpiTime, jdbcType=VARCHAR}</if>
+			<if test="gpiTimezone != null and gpiTimezone != ''">and GPI_TIMEZONE = #{gpiTimezone, jdbcType=VARCHAR}</if>
+			<if test="retransmissionId != null and retransmissionId != ''">and RETRANSMISSION_ID = #{retransmissionId, jdbcType=VARCHAR}</if>
+			<if test="gpcFlag != null and gpcFlag != ''">and GPC_FLAG = #{gpcFlag, jdbcType=VARCHAR}</if>
+			<if test="mtNarrat != null and mtNarrat != ''">and MT_NARRAT = #{mtNarrat, jdbcType=VARCHAR}</if>
+			<if test="voidFlag != null and voidFlag != ''">and VOID_FLAG = #{voidFlag, jdbcType=VARCHAR}</if>
+			<if test="mxType != null and mxType != ''">and MX_TYPE = #{mxType, jdbcType=VARCHAR}</if>
+			<if test="mxStr != null and mxStr != ''">and MX_STR = #{mxStr, jdbcType=VARCHAR}</if>
+			<if test="mxFlag != null and mxFlag != ''">and MX_FLAG = #{mxFlag, jdbcType=VARCHAR}</if>
+			<if test="mxBussService != null and mxBussService != ''">and MX_BUSS_SERVICE = #{mxBussService, jdbcType=VARCHAR}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="bhSndlt != null and bhSndlt != ''">and BH_SNDLT like concat(#{bhSndlt, jdbcType=VARCHAR},'%')</if>
+					<if test="ahRcvlt != null and ahRcvlt != ''">and AH_RCVLT like concat(#{ahRcvlt, jdbcType=VARCHAR},'%')</if>
+					<if test="ahMpro != null and ahMpro != ''">and AH_MPRO like concat(#{ahMpro, jdbcType=VARCHAR},'%')</if>
+					<if test="ohHkl != null and ohHkl != ''">and OH_HKL like concat(#{ohHkl, jdbcType=VARCHAR},'%')</if>
+					<if test="ohMuref != null and ohMuref != ''">and OH_MUREF like concat(#{ohMuref, jdbcType=VARCHAR},'%')</if>
+					<if test="ohCov != null and ohCov != ''">and OH_COV like concat(#{ohCov, jdbcType=VARCHAR},'%')</if>
+					<if test="ohGpiRef != null and ohGpiRef != ''">and OH_GPI_REF like concat(#{ohGpiRef, jdbcType=VARCHAR},'%')</if>
+					<if test="trn != null and trn != ''">and TRN like concat(#{trn, jdbcType=VARCHAR},'%')</if>
+					<if test="rtrn != null and rtrn != ''">and RTRN like concat(#{rtrn, jdbcType=VARCHAR},'%')</if>
+					<if test="mtSeq != null">and MT_SEQ = #{mtSeq, jdbcType=NUMERIC}</if>
+					<if test="mtRetryFlag != null and mtRetryFlag != ''">and MT_RETRY_FLAG like concat(#{mtRetryFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="mtPdmNm != null and mtPdmNm != ''">and MT_PDM_NM like concat(#{mtPdmNm, jdbcType=VARCHAR},'%')</if>
+					<if test="mtPdeNm != null and mtPdeNm != ''">and MT_PDE_NM like concat(#{mtPdeNm, jdbcType=VARCHAR},'%')</if>
+					<if test="mtStr != null and mtStr != ''">and MT_STR like concat(#{mtStr, jdbcType=VARCHAR},'%')</if>
+					<if test="mtStatus != null and mtStatus != ''">and MT_STATUS like concat(#{mtStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="gpiStatus != null and gpiStatus != ''">and GPI_STATUS like concat(#{gpiStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="createdTime != null">and CREATED_TIME = #{createdTime, jdbcType=DATE}</if>
+					<if test="updateLastTime != null">and UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE}</if>
+					<if test="mtBean != null and mtBean != ''">and MT_BEAN like concat(#{mtBean, jdbcType=VARCHAR},'%')</if>
+					<if test="updateLastTerm != null">and UPDATE_LAST_TERM = #{updateLastTerm, jdbcType=NUMERIC}</if>
+					<if test="updateLastTeller != null and updateLastTeller != ''">and UPDATE_LAST_TELLER like concat(#{updateLastTeller, jdbcType=VARCHAR},'%')</if>
+					<if test="updateLastAuthor != null and updateLastAuthor != ''">and UPDATE_LAST_AUTHOR like concat(#{updateLastAuthor, jdbcType=VARCHAR},'%')</if>
+					<if test="authorReminderMsg != null and authorReminderMsg != ''">and AUTHOR_REMINDER_MSG like concat(#{authorReminderMsg, jdbcType=VARCHAR},'%')</if>
+					<if test="authorComment != null and authorComment != ''">and AUTHOR_COMMENT like concat(#{authorComment, jdbcType=VARCHAR},'%')</if>
+					<if test="recordStatusNoauthor != null and recordStatusNoauthor != ''">and RECORD_STATUS_NOAUTHOR like concat(#{recordStatusNoauthor, jdbcType=VARCHAR},'%')</if>
+					<if test="updateLastTxnCode != null and updateLastTxnCode != ''">and UPDATE_LAST_TXN_CODE like concat(#{updateLastTxnCode, jdbcType=VARCHAR},'%')</if>
+					<if test="rejectCode != null and rejectCode != ''">and REJECT_CODE like concat(#{rejectCode, jdbcType=VARCHAR},'%')</if>
+					<if test="clearReqFlag != null and clearReqFlag != ''">and CLEAR_REQ_FLAG like concat(#{clearReqFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="mtMessage != null and mtMessage != ''">and MT_MESSAGE like concat(#{mtMessage, jdbcType=VARCHAR},'%')</if>
+					<if test="srcSys != null and srcSys != ''">and SRC_SYS like concat(#{srcSys, jdbcType=VARCHAR},'%')</if>
+					<if test="targetSys != null and targetSys != ''">and TARGET_SYS like concat(#{targetSys, jdbcType=VARCHAR},'%')</if>
+					<if test="msgMethod != null and msgMethod != ''">and MSG_METHOD like concat(#{msgMethod, jdbcType=VARCHAR},'%')</if>
+					<if test="msgSrc != null and msgSrc != ''">and MSG_SRC like concat(#{msgSrc, jdbcType=VARCHAR},'%')</if>
+					<if test="mtTemporary != null and mtTemporary != ''">and MT_TEMPORARY like concat(#{mtTemporary, jdbcType=VARCHAR},'%')</if>
+					<if test="frModule != null and frModule != ''">and FR_MODULE like concat(#{frModule, jdbcType=VARCHAR},'%')</if>
+					<if test="manualFg != null and manualFg != ''">and MANUAL_FG like concat(#{manualFg, jdbcType=VARCHAR},'%')</if>
+					<if test="gpiReasonCode != null and gpiReasonCode != ''">and GPI_REASON_CODE like concat(#{gpiReasonCode, jdbcType=VARCHAR},'%')</if>
+					<if test="gpiFlag != null and gpiFlag != ''">and GPI_FLAG like concat(#{gpiFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="msgNo != null and msgNo != ''">and MSG_NO like concat(#{msgNo, jdbcType=VARCHAR},'%')</if>
+					<if test="bhSessNo != null and bhSessNo != ''">and BH_SESS_NO like concat(#{bhSessNo, jdbcType=VARCHAR},'%')</if>
+					<if test="bhIsn != null and bhIsn != ''">and BH_ISN like concat(#{bhIsn, jdbcType=VARCHAR},'%')</if>
+					<if test="ahMt != null and ahMt != ''">and AH_MT like concat(#{ahMt, jdbcType=VARCHAR},'%')</if>
+					<if test="ahioFlag != null and ahioFlag != ''">and AHIO_FLAG like concat(#{ahioFlag, jdbcType=VARCHAR},'%')</if>
+			        <if test="futureFg != null and futureFg != ''">and FUTURE_FG like concat(#{futureFg, jdbcType=VARCHAR})</if>
+					<if test="acDate != null">and AC_DATE = #{acDate, jdbcType=DATE}</if>
+					<if test="traditionalFlag != null and traditionalFlag != ''">and TRADITIONAL_FLAG like concat(#{traditionalFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="pagmchOurRef != null and pagmchOurRef != ''">and PAGMCH_OUR_REF like concat(#{pagmchOurRef, jdbcType=VARCHAR},'%')</if>
+					<if test="refSub != null and refSub != ''">and REF_SUB like concat(#{refSub, jdbcType=VARCHAR},'%')</if>
+					<if test="yourChl != null and yourChl != ''">and YOUR_CHL like concat(#{yourChl, jdbcType=VARCHAR},'%')</if>
+					<if test="incomeDate != null and incomeDate != ''">and INCOME_DATE like concat(#{incomeDate, jdbcType=VARCHAR},'%')</if>
+					<if test="incomeTime != null and incomeTime != ''">and INCOME_TIME like concat(#{incomeTime, jdbcType=VARCHAR},'%')</if>
+					<if test="incomeTimeZone != null and incomeTimeZone != ''">and INCOME_TIME_ZONE like concat(#{incomeTimeZone, jdbcType=VARCHAR},'%')</if>
+					<if test="updateLastAcDate != null">and UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE}</if>
+					<if test="logNumber != null and logNumber != ''">and LOG_NUMBER like concat(#{logNumber, jdbcType=VARCHAR},'%')</if>
+					<if test="rejectedReason != null and rejectedReason != ''">and REJECTED_REASON like concat(#{rejectedReason, jdbcType=VARCHAR},'%')</if>
+			        <if test="gwMsgStatus != null and gwMsgStatus != ''">and GW_MSG_STATUS like concat(#{gwMsgStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="txncode != null and txncode != ''">and TXNCODE like concat(#{txncode, jdbcType=VARCHAR},'%')</if>
+					<if test="gpiDate != null and gpiDate != ''">and GPI_DATE like concat(#{gpiDate, jdbcType=VARCHAR},'%')</if>
+					<if test="gpiTime != null and gpiTime != ''">and GPI_TIME like concat(#{gpiTime, jdbcType=VARCHAR},'%')</if>
+					<if test="gpiTimezone != null and gpiTimezone != ''">and GPI_TIMEZONE like concat(#{gpiTimezone, jdbcType=VARCHAR},'%')</if>
+					<if test="retransmissionId != null and retransmissionId != ''">and RETRANSMISSION_ID like concat(#{retransmissionId, jdbcType=VARCHAR},'%')</if>
+					<if test="gpcFlag != null and gpcFlag != ''">and GPC_FLAG like concat(#{gpcFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="mtNarrat != null and mtNarrat != ''">and MT_NARRAT like concat(#{mtNarrat, jdbcType=VARCHAR},'%')</if>
+					<if test="voidFlag != null and voidFlag != ''">and VOID_FLAG like concat(#{voidFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="mxType != null and mxType != ''">and MX_TYPE like concat(#{mxType, jdbcType=VARCHAR},'%')</if>
+					<if test="mxStr != null and mxStr != ''">and MX_STR like concat(#{mxStr, jdbcType=VARCHAR},'%')</if>
+					<if test="mxFlag != null and mxFlag != ''">and MX_FLAG like concat(#{mxFlag, jdbcType=VARCHAR},'%')</if>
+					<if test="mxBussService != null and mxBussService != ''">and MX_BUSS_SERVICE like concat(#{mxBussService, jdbcType=VARCHAR},'%')</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.PgstsDO">
+		insert into "pgsts"( <include refid="table_columns" /> )
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "pgsts"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.bhSndlt, jdbcType=VARCHAR},
+			#{item.ahRcvlt, jdbcType=VARCHAR},
+			#{item.ahMpro, jdbcType=VARCHAR},
+			#{item.ohHkl, jdbcType=VARCHAR},
+			#{item.ohMuref, jdbcType=VARCHAR},
+			#{item.ohCov, jdbcType=VARCHAR},
+			#{item.ohGpiRef, jdbcType=VARCHAR},
+			#{item.trn, jdbcType=VARCHAR},
+			#{item.rtrn, jdbcType=VARCHAR},
+			#{item.mtSeq, jdbcType=NUMERIC},
+			#{item.mtRetryFlag, jdbcType=VARCHAR},
+			#{item.mtPdmNm, jdbcType=VARCHAR},
+			#{item.mtPdeNm, jdbcType=VARCHAR},
+			#{item.mtStr, jdbcType=VARCHAR},
+			#{item.mtStatus, jdbcType=VARCHAR},
+			#{item.gpiStatus, jdbcType=VARCHAR},
+			#{item.createdTime, jdbcType=DATE},
+			#{item.updateLastTime, jdbcType=DATE},
+			#{item.mtBean, jdbcType=VARCHAR},
+			#{item.updateLastTerm, jdbcType=NUMERIC},
+			#{item.updateLastTeller, jdbcType=VARCHAR},
+			#{item.updateLastAuthor, jdbcType=VARCHAR},
+			#{item.authorReminderMsg, jdbcType=VARCHAR},
+			#{item.authorComment, jdbcType=VARCHAR},
+			#{item.recordStatusNoauthor, jdbcType=VARCHAR},
+			#{item.updateLastTxnCode, jdbcType=VARCHAR},
+			#{item.rejectCode, jdbcType=VARCHAR},
+			#{item.clearReqFlag, jdbcType=VARCHAR},
+			#{item.mtMessage, jdbcType=VARCHAR},
+			#{item.srcSys, jdbcType=VARCHAR},
+			#{item.targetSys, jdbcType=VARCHAR},
+			#{item.msgMethod, jdbcType=VARCHAR},
+			#{item.msgSrc, jdbcType=VARCHAR},
+			#{item.mtTemporary, jdbcType=VARCHAR},
+			#{item.frModule, jdbcType=VARCHAR},
+			#{item.manualFg, jdbcType=VARCHAR},
+			#{item.gpiReasonCode, jdbcType=VARCHAR},
+			#{item.gpiFlag, jdbcType=VARCHAR},
+			#{item.msgNo, jdbcType=VARCHAR},
+			#{item.bhSessNo, jdbcType=VARCHAR},
+			#{item.bhIsn, jdbcType=VARCHAR},
+			#{item.ahMt, jdbcType=VARCHAR},
+			#{item.ahioFlag, jdbcType=VARCHAR},
+			#{item.futureFg, jdbcType=VARCHAR},
+			#{item.acDate, jdbcType=DATE},
+			#{item.traditionalFlag, jdbcType=VARCHAR},
+			#{item.pagmchOurRef, jdbcType=VARCHAR},
+			#{item.refSub, jdbcType=VARCHAR},
+			#{item.yourChl, jdbcType=VARCHAR},
+			#{item.incomeDate, jdbcType=VARCHAR},
+			#{item.incomeTime, jdbcType=VARCHAR},
+			#{item.incomeTimeZone, jdbcType=VARCHAR},
+			#{item.updateLastAcDate, jdbcType=DATE},
+			#{item.logNumber, jdbcType=VARCHAR},
+			#{item.rejectedReason, jdbcType=VARCHAR},
+			#{item.gwMsgStatus, jdbcType=VARCHAR},
+			#{item.txncode, jdbcType=VARCHAR},
+			#{item.gpiDate, jdbcType=VARCHAR},
+			#{item.gpiTime, jdbcType=VARCHAR},
+			#{item.gpiTimezone, jdbcType=VARCHAR},
+			#{item.retransmissionId, jdbcType=VARCHAR},
+			#{item.gpcFlag, jdbcType=VARCHAR},
+			#{item.mtNarrat, jdbcType=VARCHAR},
+			#{item.voidFlag, jdbcType=VARCHAR},
+			#{item.mxType, jdbcType=VARCHAR},
+			#{item.mxStr, jdbcType=VARCHAR},
+			#{item.mxFlag, jdbcType=VARCHAR},
+			#{item.mxBussService, jdbcType=VARCHAR},
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "pgsts"
+		<where>
+			and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.PgstsDO">
+		delete from "pgsts"
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.PgstsDO">
+		delete from "pgsts"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.PgstsDO">
+        update "pgsts"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="bhSndlt != null and bhSndlt != ''">BH_SNDLT = #{bhSndlt, jdbcType=VARCHAR},</if>
+            <if test="ahRcvlt != null and ahRcvlt != ''">AH_RCVLT = #{ahRcvlt, jdbcType=VARCHAR},</if>
+            <if test="ahMpro != null and ahMpro != ''">AH_MPRO = #{ahMpro, jdbcType=VARCHAR},</if>
+            <if test="ohHkl != null and ohHkl != ''">OH_HKL = #{ohHkl, jdbcType=VARCHAR},</if>
+            <if test="ohMuref != null and ohMuref != ''">OH_MUREF = #{ohMuref, jdbcType=VARCHAR},</if>
+            <if test="ohCov != null and ohCov != ''">OH_COV = #{ohCov, jdbcType=VARCHAR},</if>
+            <if test="ohGpiRef != null and ohGpiRef != ''">OH_GPI_REF = #{ohGpiRef, jdbcType=VARCHAR},</if>
+            <if test="trn != null and trn != ''">TRN = #{trn, jdbcType=VARCHAR},</if>
+            <if test="rtrn != null and rtrn != ''">RTRN = #{rtrn, jdbcType=VARCHAR},</if>
+			<if test="mtSeq != null">MT_SEQ = #{mtSeq, jdbcType=NUMERIC},</if>
+            <if test="mtRetryFlag != null and mtRetryFlag != ''">MT_RETRY_FLAG = #{mtRetryFlag, jdbcType=VARCHAR},</if>
+            <if test="mtPdmNm != null and mtPdmNm != ''">MT_PDM_NM = #{mtPdmNm, jdbcType=VARCHAR},</if>
+            <if test="mtPdeNm != null and mtPdeNm != ''">MT_PDE_NM = #{mtPdeNm, jdbcType=VARCHAR},</if>
+            <if test="mtStr != null and mtStr != ''">MT_STR = #{mtStr, jdbcType=VARCHAR},</if>
+            <if test="mtStatus != null and mtStatus != ''">MT_STATUS = #{mtStatus, jdbcType=VARCHAR},</if>
+            <if test="gpiStatus != null and gpiStatus != ''">GPI_STATUS = #{gpiStatus, jdbcType=VARCHAR},</if>
+			<if test="createdTime != null">CREATED_TIME = #{createdTime, jdbcType=DATE},</if>
+			<if test="updateLastTime != null">UPDATE_LAST_TIME = #{updateLastTime, jdbcType=DATE},</if>
+            <if test="mtBean != null and mtBean != ''">MT_BEAN = #{mtBean, jdbcType=VARCHAR},</if>
+			<if test="updateLastTerm != null">UPDATE_LAST_TERM = #{updateLastTerm, jdbcType=NUMERIC},</if>
+            <if test="updateLastTeller != null and updateLastTeller != ''">UPDATE_LAST_TELLER = #{updateLastTeller, jdbcType=VARCHAR},</if>
+            <if test="updateLastAuthor != null and updateLastAuthor != ''">UPDATE_LAST_AUTHOR = #{updateLastAuthor, jdbcType=VARCHAR},</if>
+            <if test="authorReminderMsg != null and authorReminderMsg != ''">AUTHOR_REMINDER_MSG = #{authorReminderMsg, jdbcType=VARCHAR},</if>
+            <if test="authorComment != null and authorComment != ''">AUTHOR_COMMENT = #{authorComment, jdbcType=VARCHAR},</if>
+            <if test="recordStatusNoauthor != null and recordStatusNoauthor != ''">RECORD_STATUS_NOAUTHOR = #{recordStatusNoauthor, jdbcType=VARCHAR},</if>
+            <if test="updateLastTxnCode != null and updateLastTxnCode != ''">UPDATE_LAST_TXN_CODE = #{updateLastTxnCode, jdbcType=VARCHAR},</if>
+            <if test="rejectCode != null and rejectCode != ''">REJECT_CODE = #{rejectCode, jdbcType=VARCHAR},</if>
+            <if test="clearReqFlag != null and clearReqFlag != ''">CLEAR_REQ_FLAG = #{clearReqFlag, jdbcType=VARCHAR},</if>
+            <if test="mtMessage != null and mtMessage != ''">MT_MESSAGE = #{mtMessage, jdbcType=VARCHAR},</if>
+            <if test="srcSys != null and srcSys != ''">SRC_SYS = #{srcSys, jdbcType=VARCHAR},</if>
+            <if test="targetSys != null and targetSys != ''">TARGET_SYS = #{targetSys, jdbcType=VARCHAR},</if>
+            <if test="msgMethod != null and msgMethod != ''">MSG_METHOD = #{msgMethod, jdbcType=VARCHAR},</if>
+			<if test="msgSrc != null and msgSrc != ''">MSG_SRC = #{msgSrc, jdbcType=VARCHAR},</if>
+            <if test="mtTemporary != null and mtTemporary != ''">MT_TEMPORARY = #{mtTemporary, jdbcType=VARCHAR},</if>
+            <if test="frModule != null and frModule != ''">FR_MODULE = #{frModule, jdbcType=VARCHAR},</if>
+            <if test="manualFg != null and manualFg != ''">MANUAL_FG = #{manualFg, jdbcType=VARCHAR},</if>
+			<if test="gpiReasonCode != null and gpiReasonCode != ''">GPI_REASON_CODE = #{gpiReasonCode, jdbcType=VARCHAR},</if>
+			<if test="gpiFlag != null and gpiFlag != ''">GPI_FLAG = #{gpiFlag, jdbcType=VARCHAR},</if>
+            <if test="msgNo != null and msgNo != ''">MSG_NO = #{msgNo, jdbcType=VARCHAR},</if>
+            <if test="bhSessNo != null and bhSessNo != ''">BH_SESS_NO = #{bhSessNo, jdbcType=VARCHAR},</if>
+            <if test="bhIsn != null and bhIsn != ''">BH_ISN = #{bhIsn, jdbcType=VARCHAR},</if>
+            <if test="ahMt != null and ahMt != ''">AH_MT = #{ahMt, jdbcType=VARCHAR},</if>
+            <if test="ahioFlag != null and ahioFlag != ''">AHIO_FLAG = #{ahioFlag, jdbcType=VARCHAR},</if>
+			<if test="futureFg != null and futureFg != ''">FUTURE_FG = #{futureFg, jdbcType=VARCHAR},</if>
+			<if test="acDate != null">AC_DATE = #{acDate, jdbcType=DATE},</if>
+			<if test="traditionalFlag != null and traditionalFlag != ''">TRADITIONAL_FLAG = #{traditionalFlag, jdbcType=VARCHAR},</if>
+			<if test="pagmchOurRef != null and pagmchOurRef != ''">PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR},</if>
+			<if test="refSub != null and refSub != ''">REF_SUB = #{refSub, jdbcType=VARCHAR},</if>
+			<if test="yourChl != null and yourChl != ''">YOUR_CHL = #{yourChl, jdbcType=VARCHAR},</if>
+			<if test="incomeDate != null and incomeDate != ''">INCOME_DATE = #{incomeDate, jdbcType=VARCHAR},</if>
+			<if test="incomeTime != null and incomeTime != ''">INCOME_TIME = #{incomeTime, jdbcType=VARCHAR},</if>
+			<if test="incomeTimeZone != null and incomeTimeZone != ''">INCOME_TIME_ZONE = #{incomeTimeZone, jdbcType=VARCHAR},</if>
+			<if test="updateLastAcDate != null">UPDATE_LAST_AC_DATE = #{updateLastAcDate, jdbcType=DATE},</if>
+			<if test="logNumber != null and logNumber != ''">LOG_NUMBER = #{logNumber, jdbcType=VARCHAR},</if>
+			<if test="rejectedReason != null and rejectedReason != ''">REJECTED_REASON = #{rejectedReason, jdbcType=VARCHAR},</if>
+			<if test="gwMsgStatus != null and gwMsgStatus != ''">GW_MSG_STATUS = #{gwMsgStatus, jdbcType=VARCHAR},</if>
+			<if test="txncode != null and txncode != ''">TXNCODE = #{txncode, jdbcType=VARCHAR},</if>
+			<if test="gpiDate != null and gpiDate != ''">GPI_DATE = #{gpiDate, jdbcType=VARCHAR},</if>
+			<if test="gpiTime != null and gpiTime != ''">GPI_TIME = #{gpiTime, jdbcType=VARCHAR},</if>
+			<if test="gpiTimezone != null and gpiTimezone != ''">GPI_TIMEZONE = #{gpiTimezone, jdbcType=VARCHAR},</if>
+			<if test="retransmissionId != null and retransmissionId != ''">RETRANSMISSION_ID = #{retransmissionId, jdbcType=VARCHAR},</if>
+			<if test="gpcFlag != null and gpcFlag != ''">GPC_FLAG = #{gpcFlag, jdbcType=VARCHAR},</if>
+			<if test="mtNarrat != null and mtNarrat != ''">MT_NARRAT = #{mtNarrat, jdbcType=VARCHAR},</if>
+			<if test="voidFlag != null and voidFlag != ''">VOID_FLAG = #{voidFlag, jdbcType=VARCHAR},</if>
+			<if test="mxType != null and mxType != ''">MX_TYPE = #{mxType, jdbcType=VARCHAR},</if>
+			<if test="mxStr != null and mxStr != ''">MX_STR = #{mxStr, jdbcType=VARCHAR},</if>
+			<if test="mxFlag != null and mxFlag != ''">MX_FLAG = #{mxFlag, jdbcType=VARCHAR},</if>
+			<if test="mxBussService != null and mxBussService != ''">MX_BUSS_SERVICE = #{mxBussService, jdbcType=VARCHAR},</if>
+        </trim>
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="pgstsResultMap">
+        select <include refid="table_columns" />
+        from "pgsts"
+    </select>
+
+    <select id="findList" resultMap="pgstsResultMap">
+        select <include refid="table_columns" />
+        from "pgsts"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgstsResultMap">
+		select <include refid="table_columns" />
+		from "pgsts"
+		<include refid="page_where_like" />
+	</select>
+
+    <select id="getCount" resultType="int" >
+        select count(MSG_NO) from "pgsts"
+        <include refid="page_where" />
+    </select>
+
+	<select id="get" resultMap="pgstsResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "pgsts"
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="pgstsResultMap" parameterType="com.hisun.kont.pg.entity.PgstsDO" >
+        select <include refid="table_columns" />
+        from "pgsts"
+        <where>
+            and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+	<select id="getByMsgNo" resultMap="pgstsResultMap" parameterType="String" >
+		select <include refid="table_columns" />
+		from "pgsts"
+		<where>
+			and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+		</where>
+	</select>
+
+	<!--修改业务编号为null-->
+	<update id="updateOurRef" parameterType="String">
+		update "pgsts"
+		set
+		PAGMCH_OUR_REF=NULL
+		<where>
+			and MSG_NO = #{msgNo, jdbcType=VARCHAR}
+		</where>
+	</update>
+
+	<!-- 批量修改状态 -->
+	<update id="batchUpdateStatus">
+		update "pgsts"
+		set
+		MT_STATUS=#{status},
+		UPDATE_LAST_TIME=#{updateTime}
+		where MSG_NO in
+		<foreach collection="mtKeys" item="mtKey" open="(" separator="," close=")">
+			#{mtKey}
+		</foreach>
+	</update>
+
+	<!--查询当天收入的报文-->
+	<select id="getNowDaySwift" resultMap="pgstsResultMap" parameterType="map">
+		select <include refid="table_columns"/>
+		from "pgsts"
+		where
+		UPDATE_LAST_TIME
+		BETWEEN  TO_DATE(#{startdate},'yyyy-MM-dd') AND TO_DATE(#{enddate},'yyyy-MM-dd')
+	</select>
+
+	<!--查询传送日期与当前日期的报文记录-->
+	<select id="findListByDate" resultMap="pgstsResultMap">
+		select <include refid="table_columns"/>
+		from "pgsts"
+		<where>
+			<if test="ohGpiRef != null and ohGpiRef != ''">and OH_GPI_REF = #{ohGpiRef, jdbcType=VARCHAR}</if>
+			<if test="rtrn != null and rtrn != ''">and RTRN = #{rtrn, jdbcType=VARCHAR}</if>
+			<if test="trn != null and trn != ''">and TRN = #{trn, jdbcType=VARCHAR}</if>
+			<if test="mtStatus != null and mtStatus != ''">and MT_STATUS = #{mtStatus, jdbcType=VARCHAR}</if>
+			<if test="msgNo != null and msgNo != ''">and MSG_NO = #{msgNo, jdbcType=VARCHAR}</if>
+			<if test="bhSessNo != null and bhSessNo != ''">and BH_SESS_NO = #{bhSessNo, jdbcType=VARCHAR}</if>
+			<if test="ahMt != null and ahMt != ''">and AH_MT = #{ahMt, jdbcType=VARCHAR}</if>
+			<if test="ahioFlag != null and ahioFlag != ''">and AHIO_FLAG = #{ahioFlag, jdbcType=VARCHAR}</if>
+			<if test="gwMsgStatus != null and gwMsgStatus != ''">and GW_MSG_STATUS = #{gwMsgStatus, jdbcType=VARCHAR}</if>
+			<if test="createdTime != null">
+				and CREATED_TIME
+				BETWEEN #{createdTime, jdbcType=DATE} AND #{updateLastTime, jdbcType=DATE}
+			</if>
+		</where>
+	</select>
+
+	<!--根据业务编号查pg档信息-->
+	<select id="getByOurRef" resultMap="pgstsResultMap" parameterType="String" >
+		select <include refid="table_columns" />
+		from "pgsts"
+		<where>
+			and PAGMCH_OUR_REF = #{pagmchOurRef, jdbcType=VARCHAR}
+		</where>
+	</select>
+
+	<!--根据网关状态查pg档信息-->
+	<select id="getByGwMsgStatus" resultMap="pgstsResultMap" parameterType="String" >
+		select <include refid="table_columns" />
+		from "pgsts"
+		<where>
+			and GW_MSG_STATUS = #{gwMsgStatus, jdbcType=VARCHAR}
+		</where>
+	</select>
+
+	<!--根据网关状态查pg档信息-->
+	<select id="getByVoidFlag" resultMap="pgstsResultMap" parameterType="String" >
+		select <include refid="table_columns" />
+		from "pgsts"
+		<where>
+			and VOID_FLAG = #{voidFlag, jdbcType=VARCHAR}
+		</where>
+	</select>
+
+</mapper>

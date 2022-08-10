@@ -1,0 +1,119 @@
+buildscript {
+    repositories {
+        maven { url "http://192.168.1.83:8081/nexus/content/groups/public/" }
+        maven { url "http://192.168.1.83:8081/nexus/content/repositories/snapshots/" }
+    }
+    ext {
+        springBootVersion = '2.0.9.RELEASE'
+        springCloudVersion = 'Finchley.SR4'
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE")
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven'
+
+    //微服务配置
+    version = '5.0.1-SNAPSHOT'
+
+    //单体版配置
+//    version = '6.0.1-SNAPSHOT'
+    group = 'com.hisun'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+        resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
+
+    }
+
+    configurations {
+        compile.exclude module: 'spring-cloud-starter-eureka'
+        all*.exclude group: 'org.springframework.cloud', module: 'spring-cloud-starter-eureka'
+        all*.exclude group: 'commons-logging', module: 'commons-logging'
+    }
+
+    repositories {
+        maven { url "http://192.168.1.83:8081/nexus/content/groups/public/" }
+        //maven { url "http://192.168.1.83:8081/repository/maven-public/" }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+
+        dependencies {
+            dependency 'mysql:mysql-connector-java:6.0.6'
+            dependency 'com.oracle:ojdbc6:11.2.0.3'
+            dependency 'dom4j:dom4j:1.6.1'
+            dependency 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.4'
+            dependency 'com.github.tobato:fastdfs-client:1.27.2'
+//            dependency 'org.apache.poi:poi:4.0.1'
+//            dependency 'org.apache.poi:poi-ooxml:4.0.1'
+//            dependency 'org.apache.poi:poi-ooxml-schemas:4.0.1'
+            //微服务配置
+            dependency 'com.hisun:kont-framework:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-framework-interface:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-framework-swagger:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-framework-core:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-pg-interface:1.0.1-SNAPSHOT'
+            dependency 'com.hisun:kont-tools:1.0.0-SNAPSHOT'
+            dependency 'com.hisun:kont-pgmx-interface:1.0.2-SNAPSHOT'
+            dependency 'com.hisun:kont-igw-interface:1.0.1-SNAPSHOT'
+            dependency 'jaxen:jaxen:1.1.6'
+            //单体版配置
+            /*
+            dependency 'com.hisun:kont-framework:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-framework-interface:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-framework-swagger:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-framework-core:2.3.04-SNAPSHOT'
+            dependency 'com.hisun:kont-pg-interface:2.0.1-SNAPSHOT'
+            dependency 'com.hisun:kont-pyrm-app:2.0.1-SNAPSHOT'
+            dependency 'com.hisun:kont-pyrm-interface:2.0.1-SNAPSHOT'
+            dependency 'com.hisun:kont-igw-app:2.0.1-SNAPSHOT'
+            dependency 'com.hisun:kont-igw-interface:2.0.1-SNAPSHOT'
+            dependency 'com.hisun:pays-swift-plug:10.2.0-SNAPSHOT'
+            dependency 'jaxen:jaxen:1.1.6'
+
+             */
+        }
+    }
+    dependencies {
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives jar
+        archives sourcesJar
+    }
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                snapshotRepository(url: "http://192.168.1.83:8081/nexus/content/repositories/snapshots/") {
+                    authentication(userName: 'admin', password: 'admin123')
+                }
+                repository(url: "http://192.168.1.83:8081/nexus/content/repositories/releases/") {
+                    authentication(userName: 'admin', password: 'admin123')
+                }
+            }
+        }
+    }
+}
+
+description = 'ibs-kont'

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisun.kont.pg.dao.PgtctlDao">
+	<resultMap type="com.hisun.kont.pg.entity.PgtctlDO" id="pgtctlResultMap">
+		<result property="ctlId" column="CTL_ID" jdbcType="VARCHAR"/>
+		<result property="channel" column="CHANNEL" jdbcType="VARCHAR"/>
+		<result property="ctlIStatus" column="CTL_I_STATUS" jdbcType="VARCHAR"/>
+		<result property="ctlOStatus" column="CTL_O_STATUS" jdbcType="VARCHAR"/>
+		<result property="ctlIAutoSts" column="CTL_I_AUTO_STS" jdbcType="VARCHAR"/>
+		<result property="ctlOAutoSts" column="CTL_O_AUTO_STS" jdbcType="VARCHAR"/>
+		<result property="ctlAmlSts" column="CTL_AML_STS" jdbcType="VARCHAR"/>
+		<result property="ctlTs" column="CTL_TS" jdbcType="TIMESTAMP"/>
+		<result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
+		<result property="modifyTime" column="MODIFY_TIME" jdbcType="DATE"/>
+	</resultMap>
+	
+	<sql id="table_columns">
+		CTL_ID,
+		CHANNEL,
+		CTL_I_STATUS,
+		CTL_O_STATUS,
+		CTL_I_AUTO_STS,
+		CTL_O_AUTO_STS,
+		CTL_AML_STS,
+		CTL_TS,
+		CREATE_TIME,
+		MODIFY_TIME
+    </sql>
+	<sql id="entity_properties">
+		#{ctlId, jdbcType=VARCHAR},
+		#{channel, jdbcType=VARCHAR},
+		#{ctlIStatus, jdbcType=VARCHAR},
+		#{ctlOStatus, jdbcType=VARCHAR},
+		#{ctlIAutoSts, jdbcType=VARCHAR},
+		#{ctlOAutoSts, jdbcType=VARCHAR},
+		#{ctlAmlSts, jdbcType=VARCHAR},
+		#{ctlTs, jdbcType=TIMESTAMP},
+		#{createTime, jdbcType=DATE},
+		#{modifyTime, jdbcType=DATE}
+	</sql>
+
+    <!-- 使用like用法：columnName like concat('%',#{columnName},'%') -->
+    <sql id="page_where">
+        <trim prefix="where" prefixOverrides="and | or ">
+            <if test="ctlId != null and ctlId != ''">and CTL_ID = #{ctlId, jdbcType=VARCHAR}</if>
+            <if test="channel != null and channel != ''">and CHANNEL = #{channel, jdbcType=VARCHAR}</if>
+            <if test="ctlIStatus != null and ctlIStatus != ''">and CTL_I_STATUS = #{ctlIStatus, jdbcType=VARCHAR}</if>
+            <if test="ctlOStatus != null and ctlOStatus != ''">and CTL_O_STATUS = #{ctlOStatus, jdbcType=VARCHAR}</if>
+            <if test="ctlIAutoSts != null and ctlIAutoSts != ''">and CTL_I_AUTO_STS = #{ctlIAutoSts, jdbcType=VARCHAR}</if>
+            <if test="ctlOAutoSts != null and ctlOAutoSts != ''">and CTL_O_AUTO_STS = #{ctlOAutoSts, jdbcType=VARCHAR}</if>
+            <if test="ctlAmlSts != null and ctlAmlSts != ''">and CTL_AML_STS = #{ctlAmlSts, jdbcType=VARCHAR}</if>
+			<if test="ctlTs != null">and CTL_TS = #{ctlTs, jdbcType=TIMESTAMP}</if>
+			<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+			<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+        </trim>
+    </sql>
+
+	<sql id="page_where_like">
+		<trim prefix="where" prefixOverrides="and | or ">
+					<if test="ctlId != null and ctlId != ''">and CTL_ID like concat(#{ctlId, jdbcType=VARCHAR},'%')</if>
+					<if test="channel != null and channel != ''">and CHANNEL like concat(#{channel, jdbcType=VARCHAR},'%')</if>
+					<if test="ctlIStatus != null and ctlIStatus != ''">and CTL_I_STATUS like concat(#{ctlIStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="ctlOStatus != null and ctlOStatus != ''">and CTL_O_STATUS like concat(#{ctlOStatus, jdbcType=VARCHAR},'%')</if>
+					<if test="ctlIAutoSts != null and ctlIAutoSts != ''">and CTL_I_AUTO_STS like concat(#{ctlIAutoSts, jdbcType=VARCHAR},'%')</if>
+					<if test="ctlOAutoSts != null and ctlOAutoSts != ''">and CTL_O_AUTO_STS like concat(#{ctlOAutoSts, jdbcType=VARCHAR},'%')</if>
+					<if test="ctlAmlSts != null and ctlAmlSts != ''">and CTL_AML_STS like concat(#{ctlAmlSts, jdbcType=VARCHAR},'%')</if>
+					<if test="ctlTs != null">and CTL_TS = #{ctlTs, jdbcType=TIMESTAMP}</if>
+					<if test="createTime != null">and CREATE_TIME = #{createTime, jdbcType=DATE}</if>
+					<if test="modifyTime != null">and MODIFY_TIME = #{modifyTime, jdbcType=DATE}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterType="com.hisun.kont.pg.entity.PgtctlDO">
+		insert into "PGTCTL"( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into "PGTCTL"( <include refid="table_columns" /> )
+		select t.* from
+		(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+			#{item.ctlId, jdbcType=VARCHAR},
+			#{item.channel, jdbcType=VARCHAR},
+			#{item.ctlIStatus, jdbcType=VARCHAR},
+			#{item.ctlOStatus, jdbcType=VARCHAR},
+			#{item.ctlIAutoSts, jdbcType=VARCHAR},
+			#{item.ctlOAutoSts, jdbcType=VARCHAR},
+			#{item.ctlAmlSts, jdbcType=VARCHAR},
+			#{item.ctlTs, jdbcType=TIMESTAMP},
+			#{item.createTime, jdbcType=DATE},
+			#{item.modifyTime, jdbcType=DATE}
+            from dual
+        </foreach>
+		)t
+	</insert>
+
+	<delete id="delete" parameterType="String">
+		delete from "PGTCTL"
+		<where>
+			and CTL_ID = #{ctlId, jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="com.hisun.kont.pg.entity.PgtctlDO">
+		delete from "PGTCTL"
+        <where>
+            and CTL_ID = #{ctlId, jdbcType=VARCHAR}
+        </where>
+    </delete>
+
+	<delete id="deleteEntity" parameterType="com.hisun.kont.pg.entity.PgtctlDO">
+		delete from "PGTCTL"
+		<include refid="page_where" />
+	</delete>
+
+	<update id="update" parameterType="com.hisun.kont.pg.entity.PgtctlDO">
+        update "PGTCTL"
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ctlId != null and ctlId != ''">CTL_ID = #{ctlId, jdbcType=VARCHAR},</if>
+            <if test="channel != null and channel != ''">CHANNEL = #{channel, jdbcType=VARCHAR},</if>
+            <if test="ctlIStatus != null and ctlIStatus != ''">CTL_I_STATUS = #{ctlIStatus, jdbcType=VARCHAR},</if>
+            <if test="ctlOStatus != null and ctlOStatus != ''">CTL_O_STATUS = #{ctlOStatus, jdbcType=VARCHAR},</if>
+            <if test="ctlIAutoSts != null and ctlIAutoSts != ''">CTL_I_AUTO_STS = #{ctlIAutoSts, jdbcType=VARCHAR},</if>
+            <if test="ctlOAutoSts != null and ctlOAutoSts != ''">CTL_O_AUTO_STS = #{ctlOAutoSts, jdbcType=VARCHAR},</if>
+            <if test="ctlAmlSts != null and ctlAmlSts != ''">CTL_AML_STS = #{ctlAmlSts, jdbcType=VARCHAR},</if>
+			<if test="ctlTs != null">CTL_TS = #{ctlTs, jdbcType=TIMESTAMP},</if>
+			<if test="createTime != null">CREATE_TIME = #{createTime, jdbcType=DATE},</if>
+			<if test="modifyTime != null">MODIFY_TIME = #{modifyTime, jdbcType=DATE},</if>
+        </trim>
+        <where>
+            and CTL_ID = #{ctlId, jdbcType=VARCHAR}
+        </where>
+    </update>
+
+
+    <select id="findAll" resultMap="pgtctlResultMap">
+        select <include refid="table_columns" />
+        from "PGTCTL"
+    </select>
+
+    <select id="findList" resultMap="pgtctlResultMap">
+        select <include refid="table_columns" />
+        from "PGTCTL"
+        <include refid="page_where" />
+	</select>
+
+	<select id="findListLike" resultMap="pgtctlResultMap">
+		select <include refid="table_columns" />
+		from "PGTCTL"
+		<include refid="page_where_like" />
+	</select>
+
+	<select id="get" resultMap="pgtctlResultMap" parameterType="String" >
+        select <include refid="table_columns" />
+        from "PGTCTL"
+        <where>
+            and CTL_ID = #{ctlId, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<select id="getByKey" resultMap="pgtctlResultMap" parameterType="com.hisun.kont.pg.entity.PgtctlDO" >
+        select <include refid="table_columns" />
+        from "PGTCTL"
+        <where>
+            and CTL_ID = #{ctlId, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+	<!-- 其他自定义SQL -->
+	<select id="getListPgtctl" resultMap="pgtctlResultMap" parameterType="com.hisun.kont.pg.entity.PgtctlDO">
+            SELECT * FROM PGTCTL WHERE CTL_ID=1
+    </select>
+	<update id="updateListPgtctlDto" parameterType="com.hisun.kont.pg.entity.PgtctlDO">
+		update PGTCTL
+		<set>
+			<if test="ctlIStatus != null" >
+				ctl_i_status=#{ctlIStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="ctlOStatus != null" >
+				ctl_o_status=#{ctlOStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="ctlAmlSts != null" >
+				ctl_aml_sts=#{ctlAmlSts,jdbcType=VARCHAR},
+			</if>
+			<if test="ctlIAutoSts != null" >
+				ctl_i_auto_sts=#{ctlIAutoSts,jdbcType=VARCHAR},
+			</if>
+			<if test="ctlOAutoSts != null" >
+				ctl_o_auto_sts=#{ctlOAutoSts,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE CTL_ID=1
+	</update>
+
+	<insert id="insertPgtctDto" parameterType="com.hisun.kont.pg.entity.PgtctlDO">
+		insert into "PGTCTL"( <include refid="table_columns" /> )
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+	<select id="getCtl" resultMap="pgtctlResultMap" >
+        SELECT * FROM PGTCTL WHERE CTL_ID=1
+    </select>
+</mapper>
